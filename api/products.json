@@ -1,0 +1,1112 @@
+[
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:28:53.950808Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "1",
+    "skus": [
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:55.391882Z",
+        "docType": "sku",
+        "id": "PH-1d2qre6PLo8qmJ4AyOTeivajxln",
+        "price": "189.648528",
+        "sellerSku": "SHAKESPEARE-OATMEAL-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 12
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:54.985996Z",
+        "docType": "sku",
+        "id": "PH-1d2qrVIqZURrSpLkIwUYbJIaylQ",
+        "price": "238.128138",
+        "sellerSku": "SHAKESPEARE-OATMEAL-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 91
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:54.807366Z",
+        "docType": "sku",
+        "id": "PH-1d2qrYIibqKetzmszsOjToPNLs7",
+        "price": "303.858632",
+        "sellerSku": "SHAKESPEARE-OATMEAL-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 19
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:54.894695Z",
+        "docType": "sku",
+        "id": "PH-1d2qrW23RsZYHRG6NGaC1hgJAML",
+        "price": "322.178141",
+        "sellerSku": "SHAKESPEARE-OATMEAL-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 81
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:55.183615Z",
+        "docType": "sku",
+        "id": "PH-1d2qrhCnAth6atpeYZ9V7fcp4g1",
+        "price": "394.536762",
+        "sellerSku": "SHAKESPEARE-OATMEAL-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 14
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:55.271802Z",
+        "docType": "sku",
+        "id": "PH-1d2qremT9ecOjAXkaWphEqFTBnW",
+        "price": "487.262602",
+        "sellerSku": "SHAKESPEARE-OATMEAL-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 16
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:55.502635Z",
+        "docType": "sku",
+        "id": "PH-1d2qrgjyEtaNtF9xjFX7pw41h8G",
+        "price": "569.871184",
+        "sellerSku": "SHAKESPEARE-OATMEAL-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 93
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:54.631553Z",
+        "docType": "sku",
+        "id": "PH-1d2qrY3ZuAJgzbCXYiQuVy3B20A",
+        "price": "648.954746",
+        "sellerSku": "SHAKESPEARE-OATMEAL-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 11
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:54.146064Z",
+        "docType": "sku",
+        "id": "PH-1d2qrZZpml5qUM6bH07IdCTOkKW",
+        "price": "804.209549",
+        "sellerSku": "SHAKESPEARE-OATMEAL-WHITE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 49
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:54.306738Z",
+        "docType": "sku",
+        "id": "PH-1d2qrYxtSkQiZeLisPpcIZDWeuL",
+        "price": "827.41746",
+        "sellerSku": "SHAKESPEARE-OATMEAL-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 93
+      }
+    ],
+    "title": "Shakespeare Oatmeal"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:28:55.680668Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "2",
+    "skus": [
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:56.907891Z",
+        "docType": "sku",
+        "id": "PH-1d2qrnMBG3lI5uxbhhO2r9OBoOP",
+        "price": "102.025998",
+        "sellerSku": "PEAS-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 60
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:56.711373Z",
+        "docType": "sku",
+        "id": "PH-1d2qroExRiI78A2t03RN4WJXeww",
+        "price": "118.155707",
+        "sellerSku": "PEAS-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 87
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:56.155332Z",
+        "docType": "sku",
+        "id": "PH-1d2qrqauir7vmTtPaI4byyfJG2x",
+        "price": "139.011379",
+        "sellerSku": "PEAS-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 34
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:56.511733Z",
+        "docType": "sku",
+        "id": "PH-1d2qrkG8V8oyoJC1fuxhP10zGwy",
+        "price": "222.682205",
+        "sellerSku": "PEAS-WHITE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 50
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:56.332717Z",
+        "docType": "sku",
+        "id": "PH-1d2qrlAOdvcrHXmOHbncJRzSgu6",
+        "price": "471.191403",
+        "sellerSku": "PEAS-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 85
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:55.81211Z",
+        "docType": "sku",
+        "id": "PH-1d2qrjfQRmWtixGV6JsAbtM2H2O",
+        "price": "582.425946",
+        "sellerSku": "PEAS-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 44
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:56.99541Z",
+        "docType": "sku",
+        "id": "PH-1d2qrpLX8vzhIwehr0rDqjZxKLr",
+        "price": "701.805744",
+        "sellerSku": "PEAS-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 82
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:56.420887Z",
+        "docType": "sku",
+        "id": "PH-1d2qrqEF0e50uhVE67Yx2eLzBSY",
+        "price": "714.950026",
+        "sellerSku": "PEAS-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 23
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:56.243931Z",
+        "docType": "sku",
+        "id": "PH-1d2qroR7TQkVlywn7IOUrpk9OkI",
+        "price": "783.577435",
+        "sellerSku": "PEAS-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 47
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:56.066968Z",
+        "docType": "sku",
+        "id": "PH-1d2qroWGxdt62Y6OeycjICsknHX",
+        "price": "817.164077",
+        "sellerSku": "PEAS-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 35
+      }
+    ],
+    "title": "Peas"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:28:57.098326Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "3",
+    "skus": [
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:57.560967Z",
+        "docType": "sku",
+        "id": "PH-1d2qrvZK91JooG1vOxxsBImHV8Y",
+        "price": "108.221353",
+        "sellerSku": "HOPSLAM-ALE-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 10
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:57.253133Z",
+        "docType": "sku",
+        "id": "PH-1d2qrymLPIWxbhJz0p2O06ijU7E",
+        "price": "119.537541",
+        "sellerSku": "HOPSLAM-ALE-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 77
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:57.417471Z",
+        "docType": "sku",
+        "id": "PH-1d2qryGTFjdL51SAbiZOAgi7rg8",
+        "price": "126.210056",
+        "sellerSku": "HOPSLAM-ALE-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 69
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:57.815704Z",
+        "docType": "sku",
+        "id": "PH-1d2qrvZuWf9kiKHLoLUtNHYh9XL",
+        "price": "247.171126",
+        "sellerSku": "HOPSLAM-ALE-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 86
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:58.334645Z",
+        "docType": "sku",
+        "id": "PH-1d2qs4k4yidGVlWoA1yMd6GUTip",
+        "price": "266.448755",
+        "sellerSku": "HOPSLAM-ALE-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 86
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:57.496671Z",
+        "docType": "sku",
+        "id": "PH-1d2qrwK0j54vkKtWYfA8t9tAdmC",
+        "price": "420.510438",
+        "sellerSku": "HOPSLAM-ALE-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 51
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:57.649756Z",
+        "docType": "sku",
+        "id": "PH-1d2qrxQNEL4Pa6k5oRod5sEczem",
+        "price": "421.695226",
+        "sellerSku": "HOPSLAM-ALE-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 68
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:57.329143Z",
+        "docType": "sku",
+        "id": "PH-1d2qrtLoPcQgQRxZz6SQoSLNCsh",
+        "price": "552.387338",
+        "sellerSku": "HOPSLAM-ALE-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 95
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:58.81158Z",
+        "docType": "sku",
+        "id": "PH-1d2qs5v8mgm5DbE3yThaQgw5kgN",
+        "price": "614.474988",
+        "sellerSku": "HOPSLAM-ALE-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 67
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:58.457555Z",
+        "docType": "sku",
+        "id": "PH-1d2qs3xlH8izZutoTmR02uqi2Em",
+        "price": "654.533605",
+        "sellerSku": "HOPSLAM-ALE-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 45
+      }
+    ],
+    "title": "HopSlam Ale"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:28:59.087518Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "4",
+    "skus": [
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:59.277161Z",
+        "docType": "sku",
+        "id": "PH-1d2qsEngFCKwcorHSNc4hykdEHP",
+        "price": "242.583333",
+        "sellerSku": "GUAVA-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 92
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:28:59.343728Z",
+        "docType": "sku",
+        "id": "PH-1d2qs7oJedrkqnwGa3tWQymWa97",
+        "price": "250.281388",
+        "sellerSku": "GUAVA-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 74
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:59.996895Z",
+        "docType": "sku",
+        "id": "PH-1d2qs9I8Hr2eXHOOtrgBNGUX0hR",
+        "price": "302.539535",
+        "sellerSku": "GUAVA-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 54
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:59.853019Z",
+        "docType": "sku",
+        "id": "PH-1d2qsBkwWbOzOdpMZgRCOilXMX7",
+        "price": "350.698752",
+        "sellerSku": "GUAVA-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 80
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:00.638618Z",
+        "docType": "sku",
+        "id": "PH-1d2qsKTY8nPDGUyI0tR2LkqxJIT",
+        "price": "398.656096",
+        "sellerSku": "GUAVA-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 39
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:28:59.444857Z",
+        "docType": "sku",
+        "id": "PH-1d2qs8mBvAPwqoyf9gWhTnBpC3C",
+        "price": "469.97988",
+        "sellerSku": "GUAVA-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 91
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:00.08514Z",
+        "docType": "sku",
+        "id": "PH-1d2qsJoPsB66MzJTa6loaGtt1zl",
+        "price": "484.999456",
+        "sellerSku": "GUAVA-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 42
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:28:59.542956Z",
+        "docType": "sku",
+        "id": "PH-1d2qsBDG4zsi3zmhTx20pcuyhX1",
+        "price": "514.078403",
+        "sellerSku": "GUAVA-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 27
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:59.752897Z",
+        "docType": "sku",
+        "id": "PH-1d2qsBY3faUj8I6b2st55ybEDth",
+        "price": "528.265754",
+        "sellerSku": "GUAVA-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 29
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:28:59.653899Z",
+        "docType": "sku",
+        "id": "PH-1d2qsDZfilTcxFGI317pdstDGuz",
+        "price": "773.655611",
+        "sellerSku": "GUAVA-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 29
+      }
+    ],
+    "title": "Guava"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:00.727989Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "5",
+    "skus": [
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:01.568157Z",
+        "docType": "sku",
+        "id": "PH-1d2qsPHCCvzwdOogS5qQYRkzp1Z",
+        "price": "200.87795",
+        "sellerSku": "PLINY-THE-ELDER-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 14
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:00.871297Z",
+        "docType": "sku",
+        "id": "PH-1d2qsKApOEYtj3Akqh4w5zbKMrh",
+        "price": "234.078757",
+        "sellerSku": "PLINY-THE-ELDER-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 62
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:01.834223Z",
+        "docType": "sku",
+        "id": "PH-1d2qsQNZU86wdeXyB3mWtAen4WI",
+        "price": "302.178561",
+        "sellerSku": "PLINY-THE-ELDER-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 10
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:01.302824Z",
+        "docType": "sku",
+        "id": "PH-1d2qsSpllILIgrXC3mN4rlvGZpX",
+        "price": "431.108779",
+        "sellerSku": "PLINY-THE-ELDER-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 83
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:01.015921Z",
+        "docType": "sku",
+        "id": "PH-1d2qsUB0sm0oLZqE1qTkvfZ06HP",
+        "price": "431.513664",
+        "sellerSku": "PLINY-THE-ELDER-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 74
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:01.225494Z",
+        "docType": "sku",
+        "id": "PH-1d2qsSvM4GSyzsIu0dSXYsWQx4t",
+        "price": "496.330145",
+        "sellerSku": "PLINY-THE-ELDER-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 49
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:00.948508Z",
+        "docType": "sku",
+        "id": "PH-1d2qsFNS044Cgl6CEbE7A67pbzQ",
+        "price": "604.65597",
+        "sellerSku": "PLINY-THE-ELDER-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 45
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:01.39161Z",
+        "docType": "sku",
+        "id": "PH-1d2qsOpTjh3nkJNoatErPPS0zyD",
+        "price": "735.944078",
+        "sellerSku": "PLINY-THE-ELDER-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 95
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:01.745759Z",
+        "docType": "sku",
+        "id": "PH-1d2qsPbvsB23wnohMLZvF0abI3f",
+        "price": "788.120219",
+        "sellerSku": "PLINY-THE-ELDER-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 78
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:01.103306Z",
+        "docType": "sku",
+        "id": "PH-1d2qsSpUCThwDbqGjQlCb1Nt8GE",
+        "price": "856.588408",
+        "sellerSku": "PLINY-THE-ELDER-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 54
+      }
+    ],
+    "title": "Pliny The Elder"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:06.496178Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "10",
+    "skus": [
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:07.491078Z",
+        "docType": "sku",
+        "id": "PH-1d2qtAccBk9v1dSpp4lOjUluo56",
+        "price": "111.096734",
+        "sellerSku": "ROCK-MELON-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 25
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:06.794522Z",
+        "docType": "sku",
+        "id": "PH-1d2qt3Yjgs4RauIuiG4x2jtN9uO",
+        "price": "287.358848",
+        "sellerSku": "ROCK-MELON-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 40
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:07.22555Z",
+        "docType": "sku",
+        "id": "PH-1d2qt9PAsDS6ckRCCLBn5vT8yzP",
+        "price": "351.12057",
+        "sellerSku": "ROCK-MELON-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 64
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:06.727374Z",
+        "docType": "sku",
+        "id": "PH-1d2qt1IBjbrXRlEJ8RluxLXaP7N",
+        "price": "358.842975",
+        "sellerSku": "ROCK-MELON-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 65
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:07.136802Z",
+        "docType": "sku",
+        "id": "PH-1d2qtAdV285p8kIOwTQ3FMs7wr4",
+        "price": "370.694694",
+        "sellerSku": "ROCK-MELON-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 59
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:07.313683Z",
+        "docType": "sku",
+        "id": "PH-1d2qt9MYwcSZ49OgPyYpvN2DBbC",
+        "price": "383.569633",
+        "sellerSku": "ROCK-MELON-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 68
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:07.579359Z",
+        "docType": "sku",
+        "id": "PH-1d2qt9nzZm7j1SCH8TRFOba6kv7",
+        "price": "677.502803",
+        "sellerSku": "ROCK-MELON-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 72
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:06.871508Z",
+        "docType": "sku",
+        "id": "PH-1d2qt1R0LbzjUNmoLzbdMh6vffC",
+        "price": "760.809936",
+        "sellerSku": "ROCK-MELON-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 12
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:07.048204Z",
+        "docType": "sku",
+        "id": "PH-1d2qtC60mlQdyWWBWT3MVfL3dWL",
+        "price": "880.317033",
+        "sellerSku": "ROCK-MELON-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 70
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:06.631048Z",
+        "docType": "sku",
+        "id": "PH-1d2qt16toQU09e22pYLBoXNemr6",
+        "price": "930.067871",
+        "sellerSku": "ROCK-MELON-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 61
+      }
+    ],
+    "title": "Rock melon"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:01.911695Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "6",
+    "skus": [
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:02.232888Z",
+        "docType": "sku",
+        "id": "PH-1d2qsUhl3NsP1YfH2sVugAwSEsF",
+        "price": "182.014472",
+        "sellerSku": "LEEKS-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 51
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:02.443067Z",
+        "docType": "sku",
+        "id": "PH-1d2qsXqVXwkpSZJpWBjSy7D4vxL",
+        "price": "307.319774",
+        "sellerSku": "LEEKS-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 83
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:02.588463Z",
+        "docType": "sku",
+        "id": "PH-1d2qsXRYxV99oeL23oWBJdjZGQf",
+        "price": "484.017998",
+        "sellerSku": "LEEKS-WHITE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 40
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:02.520543Z",
+        "docType": "sku",
+        "id": "PH-1d2qsWh2gVHkpu7niOZJgrDrHZx",
+        "price": "510.338015",
+        "sellerSku": "LEEKS-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 47
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:02.809818Z",
+        "docType": "sku",
+        "id": "PH-1d2qsaIlm3116SQnTUXIYG0gKpP",
+        "price": "533.129714",
+        "sellerSku": "LEEKS-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 99
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:02.133131Z",
+        "docType": "sku",
+        "id": "PH-1d2qsX2gtd8eOdKjHE0uj0WEwQi",
+        "price": "550.224267",
+        "sellerSku": "LEEKS-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 66
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:02.04415Z",
+        "docType": "sku",
+        "id": "PH-1d2qsYdG8cCMhNmkPEL1HIYjNpm",
+        "price": "588.396527",
+        "sellerSku": "LEEKS-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 97
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:02.874178Z",
+        "docType": "sku",
+        "id": "PH-1d2qsXszQzPgkuGIXF6QWArspmr",
+        "price": "687.44768",
+        "sellerSku": "LEEKS-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 16
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:02.742033Z",
+        "docType": "sku",
+        "id": "PH-1d2qsbyug6WJzc1W8ms5ykaeBg6",
+        "price": "790.785694",
+        "sellerSku": "LEEKS-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 66
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:02.29899Z",
+        "docType": "sku",
+        "id": "PH-1d2qsZ9jSqvgIbkepw4HiUiGx6P",
+        "price": "793.1677",
+        "sellerSku": "LEEKS-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 79
+      }
+    ],
+    "title": "Leeks"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:02.96301Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "7",
+    "skus": [
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:03.384014Z",
+        "docType": "sku",
+        "id": "PH-1d2qsda2HKBJj7HluXw8g1tnjl5",
+        "price": "104.237117",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 77
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:03.483572Z",
+        "docType": "sku",
+        "id": "PH-1d2qshRTNavEz7ZD5kMah6sTbFg",
+        "price": "349.265146",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 81
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:03.096111Z",
+        "docType": "sku",
+        "id": "PH-1d2qsgntZNTs43y8QpFS27MOLcF",
+        "price": "386.074831",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 74
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:03.738727Z",
+        "docType": "sku",
+        "id": "PH-1d2qsgLfApW7Io6yotDoUTn8RbW",
+        "price": "409.91764",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-WHITE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 13
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:03.286081Z",
+        "docType": "sku",
+        "id": "PH-1d2qsgMGKsMmJ334KDJOQizaxpR",
+        "price": "445.675449",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 86
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:03.660869Z",
+        "docType": "sku",
+        "id": "PH-1d2qsj5lFk0mNrbTjD4reBbV2xG",
+        "price": "569.327102",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 57
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:03.81562Z",
+        "docType": "sku",
+        "id": "PH-1d2qsdadik16y43x0aP0FulWBq9",
+        "price": "609.886827",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 93
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:03.571542Z",
+        "docType": "sku",
+        "id": "PH-1d2qsiqpRnB8znv26xovRdZhzRo",
+        "price": "646.264638",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 12
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:03.196098Z",
+        "docType": "sku",
+        "id": "PH-1d2qsjL4U015k1BMeF9D9JVZkOw",
+        "price": "784.992521",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 56
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:03.959744Z",
+        "docType": "sku",
+        "id": "PH-1d2qsctyoVv0jTZqNIrXGB8dztK",
+        "price": "947.421887",
+        "sellerSku": "FOUNDERS-BREAKFAST-STOUT-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 79
+      }
+    ],
+    "title": "Founders Breakfast Stout"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:04.114327Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "8",
+    "skus": [
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:04.358887Z",
+        "docType": "sku",
+        "id": "PH-1d2qsr21W1RmFkdQRdmq1utGRqv",
+        "price": "159.718722",
+        "sellerSku": "WATERCRESS-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 45
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:04.658068Z",
+        "docType": "sku",
+        "id": "PH-1d2qsmdqgWkJp6BNwJwymCwmVm5",
+        "price": "217.64906",
+        "sellerSku": "WATERCRESS-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 86
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:05.278741Z",
+        "docType": "sku",
+        "id": "PH-1d2qstD01G1fqMFEo2lHfhsQhfx",
+        "price": "253.858081",
+        "sellerSku": "WATERCRESS-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 12
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:05.01144Z",
+        "docType": "sku",
+        "id": "PH-1d2qsxBbQiB7yg0BD5HoSZCVWt9",
+        "price": "287.134427",
+        "sellerSku": "WATERCRESS-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 70
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:05.189083Z",
+        "docType": "sku",
+        "id": "PH-1d2qsu2RCwq8sEl7jptqYqs1DKv",
+        "price": "354.03032",
+        "sellerSku": "WATERCRESS-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 73
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:04.922765Z",
+        "docType": "sku",
+        "id": "PH-1d2qslzSl4BgVYmgkBqCdFeHl8i",
+        "price": "375.443929",
+        "sellerSku": "WATERCRESS-WHITE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 66
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:05.077975Z",
+        "docType": "sku",
+        "id": "PH-1d2qsxvdLRkU3KJF5FPxMzO75dZ",
+        "price": "464.447379",
+        "sellerSku": "WATERCRESS-BLUE-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 81
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:04.247463Z",
+        "docType": "sku",
+        "id": "PH-1d2qslCp2SWqo1vCmN6BeDJqFwc",
+        "price": "474.253315",
+        "sellerSku": "WATERCRESS-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 79
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:04.434361Z",
+        "docType": "sku",
+        "id": "PH-1d2qsmrfveswfRzwljQhvJ2y61J",
+        "price": "684.989092",
+        "sellerSku": "WATERCRESS-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 35
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:04.834282Z",
+        "docType": "sku",
+        "id": "PH-1d2qsnByjQ76GqzQfSjnVBLa5Iy",
+        "price": "704.088079",
+        "sellerSku": "WATERCRESS-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 28
+      }
+    ],
+    "title": "Watercress"
+  },
+  {
+    "brand": "Demo",
+    "category": "Demo",
+    "createdAt": "2020-06-08T16:29:05.37781Z",
+    "docType": "product",
+    "highlights": ["100% Authentic", "100% Organic", "Free Delivery"],
+    "id": "9",
+    "skus": [
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:06.397136Z",
+        "docType": "sku",
+        "id": "PH-1d2qt6DJKIJn63a0Fk9WPYkbcXs",
+        "price": "144.313478",
+        "sellerSku": "RUINATION-IPA-BLUE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 53
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:05.985395Z",
+        "docType": "sku",
+        "id": "PH-1d2qstQuht2VMOGRePfhMoQ1FmK",
+        "price": "218.724273",
+        "sellerSku": "RUINATION-IPA-RED-SMALL",
+        "size_s": "Small",
+        "stockLevel": 79
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:06.062859Z",
+        "docType": "sku",
+        "id": "PH-1d2qt3NyoKMSqESthtrPBO51HgN",
+        "price": "318.105165",
+        "sellerSku": "RUINATION-IPA-RED-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 74
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:06.23993Z",
+        "docType": "sku",
+        "id": "PH-1d2qt4dkjmlafU7CiTeV2hdVpS0",
+        "price": "518.60721",
+        "sellerSku": "RUINATION-IPA-WHITE-SMALL",
+        "size_s": "Small",
+        "stockLevel": 11
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:06.151348Z",
+        "docType": "sku",
+        "id": "PH-1d2qt5ZeFqlQeQYmrBpqPNh6tl3",
+        "price": "569.641473",
+        "sellerSku": "RUINATION-IPA-BLACK-LARGE",
+        "size_s": "Large",
+        "stockLevel": 21
+      },
+      {
+        "color_s": "Blue",
+        "createdAt": "2020-06-08T16:29:05.8966Z",
+        "docType": "sku",
+        "id": "PH-1d2qstkmnw0aUQlJP1K6W2ShF2n",
+        "price": "586.989626",
+        "sellerSku": "RUINATION-IPA-BLUE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 66
+      },
+      {
+        "color_s": "White",
+        "createdAt": "2020-06-08T16:29:05.642008Z",
+        "docType": "sku",
+        "id": "PH-1d2qsx2kTWiPh9vEfA1Q4q09J3f",
+        "price": "723.558785",
+        "sellerSku": "RUINATION-IPA-WHITE-LARGE",
+        "size_s": "Large",
+        "stockLevel": 37
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:05.488416Z",
+        "docType": "sku",
+        "id": "PH-1d2qsxhKUYfqmPesHOku73q07d7",
+        "price": "726.527704",
+        "sellerSku": "RUINATION-IPA-BLACK-SMALL",
+        "size_s": "Small",
+        "stockLevel": 67
+      },
+      {
+        "color_s": "Black",
+        "createdAt": "2020-06-08T16:29:05.555637Z",
+        "docType": "sku",
+        "id": "PH-1d2qsuXZG0wSwK5uFSwPllb5Ydz",
+        "price": "804.772998",
+        "sellerSku": "RUINATION-IPA-BLACK-MEDIUM",
+        "size_s": "Medium",
+        "stockLevel": 12
+      },
+      {
+        "color_s": "Red",
+        "createdAt": "2020-06-08T16:29:05.719617Z",
+        "docType": "sku",
+        "id": "PH-1d2qsuK3SPSk6EjUB1HqLhwqtFm",
+        "price": "809.516174",
+        "sellerSku": "RUINATION-IPA-RED-LARGE",
+        "size_s": "Large",
+        "stockLevel": 11
+      }
+    ],
+    "title": "Ruination IPA"
+  }
+]
