@@ -1,47 +1,40 @@
 <template>
   <div>
-    <div class="filter">
-      <h1>Color Family</h1>
+    <div v-for="(facet, i) in facets" :key="i">
+      <h1 class="title">{{ facet.name }}</h1>
       <div class="fields">
-        <div v-for="(v, i) in ['Black', 'Red', 'White', 'Purple']" :key="i">
-          <b-checkbox>
-            {{ v }}
+        <div v-for="(bucket, j) in facet.buckets" :key="j">
+          <b-checkbox
+            v-model="facet.selected"
+            :native-value="bucket.val"
+            @input="onChecked"
+          >
+            {{ bucket.val }} ({{ bucket.productCount }})
           </b-checkbox>
         </div>
       </div>
-    </div>
 
-    <hr />
-
-    <div class="filter">
-      <h1>Service</h1>
-      <div class="fields">
-        <div
-          v-for="(v, i) in [
-            'Global Collection',
-            'Cash On Delivery',
-            'Filfulled By Lazada',
-            'Free Shipping',
-          ]"
-          :key="i"
-        >
-          <b-checkbox>
-            {{ v }}
-          </b-checkbox>
-        </div>
-      </div>
-    </div>
-    <hr />
-
-    <div class="filter">
-      <h1>Location</h1>
-      <div class="fields">
-        <div v-for="(v, i) in ['NCR', 'Overseas']" :key="i">
-          <b-checkbox>
-            {{ v }}
-          </b-checkbox>
-        </div>
-      </div>
+      <hr />
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    facets: {
+      type: Array,
+      default: () => [],
+    },
+    filtered: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  methods: {
+    onChecked() {
+      this.$emit("changed");
+    },
+  },
+};
+</script>

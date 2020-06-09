@@ -2,173 +2,160 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"flag"
+	"io/ioutil"
 	"log"
+	"net/http"
 
-	"github.com/davecgh/go-spew/spew"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 	"github.com/stevenferrer/solr-go"
+	solrindex "github.com/stevenferrer/solr-go/index"
+	solrschema "github.com/stevenferrer/solr-go/schema"
 	. "github.com/stevenferrer/solr-go/types"
 )
 
-type Facet struct {
-	Name    string
-	Buckets []Bucket
-}
-
-type Bucket struct {
-	Val          string
-	SkuCount     int
-	ProductCount int
-}
-
-type Product struct {
-	ID    string
-	Title string
-}
+const (
+	collection   = "multi-select-demo"
+	productsPath = "products.json"
+)
 
 func main() {
-	sample()
-}
+	initSchema := flag.Bool("init-schema", false, "initialize solr schema")
+	index := flag.Bool("index", false, "index products")
+	flag.Parse()
 
-func sample() {
-	client := solr.NewClient("localhost", 8983)
+	solrClient := solr.NewClient("localhost", 8983)
 
-	resp, err := client.Query().Query(context.Background(), "merka-products", M{
-		"queries": M{
-			"child.query": "docType:sku",
-			"child.fq": []string{
-				"{!tag=color}color_s:Black OR color_s:Red",
-				"{!tag=size}size_s:Large OR size_s:Medium",
-			},
-			"parent.fq": "docType:product",
-		},
-		"filter": []string{
-			"{!tag=top df=category v=Demo}",
-		},
-		"fields": "id,title,score",
-		"query":  "{!parent tag=top filters=$child.fq which=$parent.fq score=total v=$child.query}",
-		"facet": M{
-			"colors": M{
-				"domain": M{
-					"excludeTags": "top",
-					"filter": []string{
-						"{!filters param=$child.fq excludeTags=color v=$child.query}",
-						"{!child of=$parent.fq filters=$fq v=$parent.fq}",
-					},
-				},
-				"type":  "terms",
-				"field": "color_s",
-				"limit": -1,
-				"facet": M{
-					"productCount": "uniqueBlock(_root_)",
-				},
-			},
-			"sizes": M{
-				"domain": M{
-					"excludeTags": "top",
-					"filter": []string{
-						"{!filters param=$child.fq excludeTags=size v=$child.query}",
-						"{!child of=$parent.fq filters=$fq v=$parent.fq}",
-					},
-				},
-				"type":  "terms",
-				"field": "size_s",
-				"limit": -1,
-				"facet": M{
-					"productCount": "uniqueBlock(_root_)",
-				},
-			},
-			"categories": M{
-				"type":  "terms",
-				"field": "category",
-				"limit": -1,
-				"facet": M{
-					"productCount": "uniqueBlock(_root_)",
-				},
-			},
-			"brands": M{
-				"type":  "terms",
-				"field": "brand",
-				"limit": -1,
-				"facet": M{
-					"productCount": "uniqueBlock(_root_)",
-				},
-			},
-		},
+	if *initSchema {
+		log.Print("initializing solr schema...")
+		err := initSolrSchema(solrClient.Schema())
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	if *index {
+		log.Println("indexing products...")
+		err := indexProducts(solrClient.Index())
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	r := chi.NewRouter()
+
+	// basic middlewares
+	r.Use(middleware.Logger)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	// search handler
+	r.Method(http.MethodGet, "/search", &searchHandler{
+		solrClient: solrClient,
 	})
+
+	addr := ":8081"
+	log.Printf("listening on %s\n", addr)
+	err := http.ListenAndServe(addr, r)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
-	var facets = []Facet{}
-	for k, v := range resp.Facets {
-		if k == "count" {
-			continue
-		}
-
-		vv, ok := v.(map[string]interface{})
-		if !ok {
-			log.Fatal("buckets is not map[string]interface{}")
-		}
-
-		bucks, ok := vv["buckets"].([]interface{})
-		if !ok {
-			log.Fatal("buckets not found")
-		}
-
-		buckets := []Bucket{}
-		for _, bk := range bucks {
-			buck, ok := bk.(map[string]interface{})
-			if !ok {
-				log.Fatal("bk not map[string]interface{}")
-			}
-
-			productCount, ok := buck["productCount"].(float64)
-			if !ok {
-				log.Fatal("product count not found")
-			}
-
-			skuCount, ok := buck["count"].(float64)
-			if !ok {
-				log.Fatal("sku count not found")
-			}
-
-			val, ok := buck["val"].(string)
-			if !ok {
-				log.Fatal("val not found")
-			}
-
-			buckets = append(buckets, Bucket{
-				Val:          val,
-				SkuCount:     int(skuCount),
-				ProductCount: int(productCount),
-			})
-
-		}
-
-		facets = append(facets, Facet{
-			Name:    k,
-			Buckets: buckets,
-		})
+func initSolrSchema(schemaClient solrschema.Client) error {
+	fields := []solrschema.Field{
+		{
+			Name:    "docType",
+			Type:    "string",
+			Indexed: true,
+			Stored:  true,
+		},
+		{
+			Name:    "category",
+			Type:    "text_general",
+			Indexed: true,
+			Stored:  true,
+		},
+		{
+			Name:    "productType",
+			Type:    "string",
+			Indexed: true,
+			Stored:  true,
+		},
+		{
+			Name:    "brand",
+			Type:    "text_gen_sort",
+			Indexed: true,
+			Stored:  true,
+		},
+		// sku fields
+		{
+			Name:    "color",
+			Type:    "string",
+			Indexed: true,
+			Stored:  true,
+		},
+		{
+			Name:    "size",
+			Type:    "string",
+			Indexed: true,
+			Stored:  true,
+		},
 	}
 
-	var products = []Product{}
-	for _, doc := range resp.Response.Docs {
-		id, ok := doc["id"].(string)
-		if !ok {
-			log.Fatal("id not found")
-		}
-
-		title, ok := doc["title"].([]interface{})
-		if !ok {
-			log.Fatal("title note found")
-		}
-
-		products = append(products, Product{
-			ID:    id,
-			Title: title[0].(string),
-		})
+	// _text_ copy field
+	copyFields := []solrschema.CopyField{
+		{
+			Source: "*",
+			Dest:   "_text_",
+		},
 	}
 
-	spew.Dump(facets)
-	spew.Dump(products)
+	ctx := context.Background()
+
+	var err error
+	for _, field := range fields {
+		err = schemaClient.AddField(ctx, collection, field)
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, copyField := range copyFields {
+		err = schemaClient.AddCopyField(ctx, collection, copyField)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func indexProducts(indexClient solrindex.JSONClient) error {
+	b, err := ioutil.ReadFile(productsPath)
+	if err != nil {
+		return err
+	}
+
+	var docs []M
+	err = json.Unmarshal(b, &docs)
+	if err != nil {
+		return err
+	}
+
+	err = indexClient.AddMultiple(context.Background(), collection, docs)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

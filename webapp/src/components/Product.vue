@@ -8,10 +8,12 @@
     <div class="card-content">
       <div>
         <div class="product-title">
-          <span class="is-size-6">My Product</span>
+          <span class="is-size-6">{{ data.brand }}</span
+          ><br />
+          <span class="has-text-grey">{{ data.productType }}</span>
         </div>
         <br />
-        <span class="is-size-6 has-text-success">PHP 50.00 </span>
+        <span class="is-size-6 has-text-success">PHP 1,501.30 </span>
         <br />
         <span>
           <b-rate v-model="rating" show-score disabled size="is-small">
@@ -24,6 +26,11 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+    },
+  },
   data() {
     return {
       rating: 4.3,
