@@ -37,13 +37,6 @@ type searchHandler struct {
 	solrClient solr.Client
 }
 
-/*
-   "colorFamily_s": "Black",
-   "simCardSlots_s": "Single",
-   "operatingSystem_s": "iOS",
-   "storageCapacity_s": "256GB"
-*/
-
 func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	categories := strings.Split(r.URL.Query().Get("categories"), ",")
 	productTypes := strings.Split(r.URL.Query().Get("productTypes"), ",")
@@ -100,8 +93,8 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	colorsFctCfg := facetConfig{
-		facet: "colors",
+	colorFamiliesFctCfg := facetConfig{
+		facet: "colorFamilies",
 		field: "colorFamily_s",
 		vals:  colorFamilies,
 	}
@@ -125,7 +118,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	childFqs := []string{}
-	for _, fctCfg := range []facetConfig{colorsFctCfg, simCardSlotsFctCfg, operatingSystemsFctCfg, storageCapacitiesFctCfg} {
+	for _, fctCfg := range []facetConfig{colorFamiliesFctCfg, simCardSlotsFctCfg, operatingSystemsFctCfg, storageCapacitiesFctCfg} {
 		tagVals := []string{}
 		for _, val := range fctCfg.vals {
 			if val == "" {
@@ -270,8 +263,9 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := M{
-		"products": products,
-		"facets":   facets,
+		"products":      products,
+		"facets":        facets,
+		"queryResponse": queryRespone,
 	}
 
 	w.Header().Add("content-type", "application/json")

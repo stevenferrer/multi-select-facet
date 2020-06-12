@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"github.com/pkg/errors"
 	"github.com/stevenferrer/solr-go"
 	solrindex "github.com/stevenferrer/solr-go/index"
 	solrschema "github.com/stevenferrer/solr-go/schema"
@@ -30,9 +31,10 @@ func main() {
 
 	solrClient := solr.NewClient("localhost", 8983)
 
+	ctx := context.Background()
 	if *initSchema {
 		log.Print("initializing solr schema...")
-		err := initSolrSchema(solrClient.Schema())
+		err := initSolrSchema(ctx, solrClient.Schema())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -40,7 +42,7 @@ func main() {
 
 	if *index {
 		log.Println("indexing products...")
-		err := indexProducts(solrClient.Index())
+		err := indexProducts(ctx, solrClient.Index())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -72,9 +74,8 @@ func main() {
 	}
 }
 
-func initSolrSchema(schemaClient solrschema.Client) error {
-	// the sku fields are not defined in here coz they are
-	// assumed to be dynamic (i.e. by adding a type suffix)
+func initSolrSchema(ctx context.Context, schemaClient solrschema.Client) error {
+	// define the fields
 	fields := []solrschema.Field{
 		{
 			Name:    "docType",
@@ -108,35 +109,26 @@ func initSolrSchema(schemaClient solrschema.Client) error {
 		},
 	}
 
-	// copy field
-	copyFields := []solrschema.CopyField{
-		{
-			Source: "*",
-			Dest:   "_text_",
-		},
-	}
-
-	ctx := context.Background()
-
-	var err error
 	for _, field := range fields {
-		err = schemaClient.AddField(ctx, collection, field)
+		err := schemaClient.AddField(ctx, collection, field)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "add field")
 		}
 	}
 
-	for _, copyField := range copyFields {
-		err = schemaClient.AddCopyField(ctx, collection, copyField)
-		if err != nil {
-			return err
-		}
+	// define copy field
+	err := schemaClient.AddCopyField(ctx, collection, solrschema.CopyField{
+		Source: "*",
+		Dest:   "_text_",
+	})
+	if err != nil {
+		return errors.Wrap(err, "add copy field")
 	}
 
 	return nil
 }
 
-func indexProducts(indexClient solrindex.JSONClient) error {
+func indexProducts(ctx context.Context, indexClient solrindex.JSONClient) error {
 	b, err := ioutil.ReadFile(dataPath)
 	if err != nil {
 		return err
@@ -148,7 +140,7 @@ func indexProducts(indexClient solrindex.JSONClient) error {
 		return err
 	}
 
-	err = indexClient.AddMultiple(context.Background(), collection, docs)
+	err = indexClient.AddMultiple(ctx, collection, docs)
 	if err != nil {
 		return err
 	}
