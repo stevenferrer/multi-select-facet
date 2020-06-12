@@ -1,0 +1,190 @@
+[
+  {
+    "id": "1",
+    "name": "Apple iPhone 11 Pro Max",
+    "brand": "Apple",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "10",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "simCardSlots_s": "Single",
+        "operatingSystem_s": "iOS",
+        "storageCapacity_s": "256GB"
+      },
+      {
+        "id": "11",
+        "docType": "sku",
+        "colorFamily_s": "Space Grey",
+        "simCardSlots_s": "Single",
+        "operatingSystem_s": "iOS",
+        "storageCapacity_s": "64GB"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Apple iPhone 11 Pro",
+    "brand": "Apple",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "20",
+        "docType": "sku",
+        "colorFamily_s": "Gold",
+        "simCardSlots_s": "Single",
+        "operatingSystem_s": "iOS",
+        "storageCapacity_s": "64GB"
+      },
+      {
+        "id": "21",
+        "docType": "sku",
+        "colorFamily_s": "Midnight Green",
+        "simCardSlots_s": "Single",
+        "operatingSystem_s": "iOS",
+        "storageCapacity_s": "64GB"
+      },
+      {
+        "id": "21",
+        "docType": "sku",
+        "colorFamily_s": "Space Grey",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "iOS",
+        "storageCapacity_s": "64GB"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Huawei Nova 7i",
+    "brand": "Huawei",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "30",
+        "docType": "sku",
+        "colorFamily_s": "Sakura Pink",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "31",
+        "docType": "sku",
+        "colorFamily_s": "Crush Green",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "33",
+        "docType": "sku",
+        "colorFamily_s": "Midnight Black",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Huawei Y9s",
+    "brand": "Huawei",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "40",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "41",
+        "docType": "sku",
+        "colorFamily_s": "Blue",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "OPPO A9 2020",
+    "brand": "OPPO",
+    "docType": "product",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "skus": [
+      {
+        "id": "50",
+        "docType": "sku",
+        "colorFamily_s": "Purple",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "51",
+        "docType": "sku",
+        "colorFamily_s": "Green",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "52",
+        "docType": "sku",
+        "colorFamily_s": "Vanilla Mint",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "Xiaomi Redmi Note 9",
+    "brand": "Xiaomi",
+    "category": "Electronic Devices",
+    "productType": "Smartphones",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "60",
+        "docType": "sku",
+        "colorFamily_s": "Midnight Grey",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "61",
+        "docType": "sku",
+        "colorFamily_s": "Polar White",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      },
+      {
+        "id": "62",
+        "docType": "sku",
+        "colorFamily_s": "Forest Green",
+        "simCardSlots_s": "Dual",
+        "operatingSystem_s": "Android",
+        "storageCapacity_s": "128GB"
+      }
+    ]
+  }
+]

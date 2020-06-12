@@ -14,12 +14,13 @@ import (
 	"github.com/stevenferrer/solr-go"
 	solrindex "github.com/stevenferrer/solr-go/index"
 	solrschema "github.com/stevenferrer/solr-go/schema"
-	. "github.com/stevenferrer/solr-go/types"
 )
 
+type M = map[string]interface{}
+
 const (
-	collection   = "multi-select-demo"
-	productsPath = "products.json"
+	collection = "multi-select-demo"
+	dataPath   = "phones.json"
 )
 
 func main() {
@@ -72,6 +73,8 @@ func main() {
 }
 
 func initSolrSchema(schemaClient solrschema.Client) error {
+	// the sku fields are not defined in here coz they are
+	// assumed to be dynamic (i.e. by adding a type suffix)
 	fields := []solrschema.Field{
 		{
 			Name:    "docType",
@@ -80,14 +83,14 @@ func initSolrSchema(schemaClient solrschema.Client) error {
 			Stored:  true,
 		},
 		{
-			Name:    "category",
+			Name:    "name",
 			Type:    "text_general",
 			Indexed: true,
 			Stored:  true,
 		},
 		{
-			Name:    "productType",
-			Type:    "string",
+			Name:    "category",
+			Type:    "text_gen_sort",
 			Indexed: true,
 			Stored:  true,
 		},
@@ -97,22 +100,15 @@ func initSolrSchema(schemaClient solrschema.Client) error {
 			Indexed: true,
 			Stored:  true,
 		},
-		// sku fields
 		{
-			Name:    "color",
-			Type:    "string",
-			Indexed: true,
-			Stored:  true,
-		},
-		{
-			Name:    "size",
+			Name:    "productType",
 			Type:    "string",
 			Indexed: true,
 			Stored:  true,
 		},
 	}
 
-	// _text_ copy field
+	// copy field
 	copyFields := []solrschema.CopyField{
 		{
 			Source: "*",
@@ -141,7 +137,7 @@ func initSolrSchema(schemaClient solrschema.Client) error {
 }
 
 func indexProducts(indexClient solrindex.JSONClient) error {
-	b, err := ioutil.ReadFile(productsPath)
+	b, err := ioutil.ReadFile(dataPath)
 	if err != nil {
 		return err
 	}

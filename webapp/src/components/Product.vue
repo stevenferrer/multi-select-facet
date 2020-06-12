@@ -8,9 +8,9 @@
     <div class="card-content">
       <div>
         <div class="product-title">
-          <span class="is-size-6">{{ data.brand }}</span
+          <span class="is-size-6">{{ data.name }}</span
           ><br />
-          <span class="has-text-grey">{{ data.productType }}</span>
+          <span class="has-text-grey">{{ data.brand }}</span>
         </div>
         <br />
         <span class="is-size-6 has-text-success">PHP 1,501.30 </span>

@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/stevenferrer/solr-go"
-	. "github.com/stevenferrer/solr-go/types"
 )
 
 type facet struct {
@@ -23,9 +22,10 @@ type bucket struct {
 
 type product struct {
 	ID          string `json:"id"`
-	Brand       string `json:"brand"`
+	Name        string `json:"name"`
 	Category    string `json:"category"`
 	ProductType string `json:"productType"`
+	Brand       string `json:"brand"`
 }
 
 type facetConfig struct {
@@ -37,12 +37,21 @@ type searchHandler struct {
 	solrClient solr.Client
 }
 
+/*
+   "colorFamily_s": "Black",
+   "simCardSlots_s": "Single",
+   "operatingSystem_s": "iOS",
+   "storageCapacity_s": "256GB"
+*/
+
 func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	categories := strings.Split(r.URL.Query().Get("categories"), ",")
 	productTypes := strings.Split(r.URL.Query().Get("productTypes"), ",")
 	brands := strings.Split(r.URL.Query().Get("brands"), ",")
-	colors := strings.Split(r.URL.Query().Get("colors"), ",")
-	sizes := strings.Split(r.URL.Query().Get("sizes"), ",")
+	colorFamilies := strings.Split(r.URL.Query().Get("colorFamilies"), ",")
+	simCardSlots := strings.Split(r.URL.Query().Get("simCardSlots"), ",")
+	operatingSystems := strings.Split(r.URL.Query().Get("operatingSystems"), ",")
+	storageCapacities := strings.Split(r.URL.Query().Get("storageCapacities"), ",")
 
 	facetsMap := M{}
 
@@ -92,19 +101,31 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	colorsFctCfg := facetConfig{
-		field: "color",
 		facet: "colors",
-		vals:  colors,
+		field: "colorFamily_s",
+		vals:  colorFamilies,
 	}
 
-	sizesFctCfg := facetConfig{
-		field: "size",
-		facet: "sizes",
-		vals:  sizes,
+	simCardSlotsFctCfg := facetConfig{
+		facet: "simCardSlots",
+		field: "simCardSlots_s",
+		vals:  simCardSlots,
+	}
+
+	operatingSystemsFctCfg := facetConfig{
+		facet: "operatingSystems",
+		field: "operatingSystem_s",
+		vals:  operatingSystems,
+	}
+
+	storageCapacitiesFctCfg := facetConfig{
+		facet: "storageCapacities",
+		field: "storageCapacity_s",
+		vals:  storageCapacities,
 	}
 
 	childFqs := []string{}
-	for _, fctCfg := range []facetConfig{colorsFctCfg, sizesFctCfg} {
+	for _, fctCfg := range []facetConfig{colorsFctCfg, simCardSlotsFctCfg, operatingSystemsFctCfg, storageCapacitiesFctCfg} {
 		tagVals := []string{}
 		for _, val := range fctCfg.vals {
 			if val == "" {
@@ -219,14 +240,19 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "id not found", 500)
 		}
 
-		brand, ok := doc["brand"].([]interface{})
+		name, ok := doc["name"].([]interface{})
 		if !ok {
-			http.Error(w, "brand not found", 500)
+			http.Error(w, "name not found", 500)
 		}
 
 		category, ok := doc["category"].([]interface{})
 		if !ok {
 			http.Error(w, "category not found", 500)
+		}
+
+		brand, ok := doc["brand"].([]interface{})
+		if !ok {
+			http.Error(w, "brand not found", 500)
 		}
 
 		productType, ok := doc["productType"].(string)
@@ -236,8 +262,9 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		products = append(products, product{
 			ID:          id,
-			Brand:       brand[0].(string),
+			Name:        name[0].(string),
 			Category:    category[0].(string),
+			Brand:       brand[0].(string),
 			ProductType: productType,
 		})
 	}
