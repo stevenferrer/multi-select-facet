@@ -1,0 +1,28 @@
+{
+  "query": "{!parent tag=top filters=$skuFilters which=docType:product v=docType:sku}",
+  "queries": {
+    "skuFilters": ["{!tag=colorFamily_s}colorFamily_s:Black"]
+  },
+  "filter": ["{!tag=top}brand:Amazon"],
+  "facet": {
+    "Brand": {
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "brand",
+      "limit": -1,
+      "type": "terms"
+    },
+    "Color Family": {
+      "domain": {
+        "excludeTags": "top",
+        "filter": [
+          "{!filters param=$skuFilters excludeTags=colorFamily_s v=$sku}",
+          "{!child of=docType:product filters=$filter v=docType:product}"
+        ]
+      },
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "colorFamily_s",
+      "limit": -1,
+      "type": "terms"
+    }
+  }
+}

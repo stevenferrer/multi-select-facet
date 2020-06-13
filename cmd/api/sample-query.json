@@ -1,0 +1,66 @@
+{
+  "query": "{!parent tag=top filters=$skuFilters which=$product score=total v=$sku}",
+  "queries": {
+    "product": "docType:product",
+    "sku": "docType:sku",
+    "skuFilters": [
+      "{!tag=colorFamily_s}colorFamily_s:Black",
+      "{!tag=operatingSystem_s}operatingSystem_s:*",
+      "{!tag=storageCapacity_s}storageCapacity_s:*"
+    ]
+  },
+  "filter": ["{!tag=top}productType:*", "{!tag=top}brand:Amazon"],
+  "facet": {
+    "Brand": {
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "brand",
+      "limit": -1,
+      "type": "terms"
+    },
+    "Color Family": {
+      "domain": {
+        "excludeTags": "top",
+        "filter": [
+          "{!filters param=$skuFilters excludeTags=colorFamily_s v=$sku}",
+          "{!child of=$product filters=$fq v=$product}"
+        ]
+      },
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "colorFamily_s",
+      "limit": -1,
+      "type": "terms"
+    },
+    "Operating System": {
+      "domain": {
+        "excludeTags": "top",
+        "filter": [
+          "{!filters param=$skuFilters excludeTags=operatingSystem_s v=$sku}",
+          "{!child of=$product filters=$fq v=$product}"
+        ]
+      },
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "operatingSystem_s",
+      "limit": -1,
+      "type": "terms"
+    },
+    "Product Type": {
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "productType",
+      "limit": -1,
+      "type": "terms"
+    },
+    "Storage Capacity": {
+      "domain": {
+        "excludeTags": "top",
+        "filter": [
+          "{!filters param=$skuFilters excludeTags=storageCapacity_s v=$sku}",
+          "{!child of=$product filters=$fq v=$product}"
+        ]
+      },
+      "facet": { "productCount": "uniqueBlock(_root_)" },
+      "field": "storageCapacity_s",
+      "limit": -1,
+      "type": "terms"
+    }
+  }
+}

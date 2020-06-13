@@ -10,8 +10,9 @@
         <div class="product-title">
           <span class="is-size-6">{{ data.name }}</span
           ><br />
-          <span class="has-text-grey">{{ data.brand }}</span>
         </div>
+
+        <span class="has-text-grey">{{ data.brand }}</span>
         <br />
         <span class="is-size-6 has-text-success">PHP 1,501.30 </span>
         <br />
@@ -23,6 +24,24 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  overflow: hidden;
+  position: relative;
+  border-radius: 0.5em;
+}
+
+.product-title {
+  display: -webkit-box;
+  height: 2em;
+  -webkit-line-clamp: 3;
+  line-height: 1em;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
 
 <script>
 export default {

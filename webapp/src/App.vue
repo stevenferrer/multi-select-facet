@@ -30,7 +30,7 @@ async function search(filters) {
 
   const url = new URL("http://localhost:8081/search");
   filters.forEach((filter) => {
-    url.searchParams.append(filter.name, filter.selected.join(","));
+    url.searchParams.append(filter.param, filter.selected.join(","));
   });
 
   let response = await fetch(url, {
@@ -49,7 +49,7 @@ async function search(filters) {
       facets: facets
         .map((facet) => {
           let selected = [];
-          let filter = filters.find((filter) => filter.name === facet.name);
+          let filter = filters.find((filter) => filter.param === facet.param);
           if (filter) {
             selected = filter.selected;
           }
@@ -96,8 +96,8 @@ export default {
       const { facets: oldFacet } = this;
       const filters = oldFacet
         .filter(({ selected }) => selected.length > 0)
-        .map(({ name, selected }) => {
-          return { name, selected };
+        .map(({ name, param, selected }) => {
+          return { name, param, selected };
         });
 
       const { products, facets } = await search(filters);

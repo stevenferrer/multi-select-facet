@@ -186,5 +186,63 @@
         "storageCapacity_s": "128GB"
       }
     ]
+  },
+  {
+    "id": "7",
+    "name": "Amazon Kindle Paperwhite - 10th Gen",
+    "brand": "Amazon",
+    "category": "Electronic Devices",
+    "productType": "E-reader",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "70",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "storageCapacity_s": "8GB",
+        "operatingSystem_s": "Linux"
+      },
+      {
+        "id": "71",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "storageCapacity_s": "32GB",
+        "operatingSystem_s": "Linux"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Kobo Clara HD 6\" Carta E Ink Touchscreen E-Reader",
+    "brand": "Kobo",
+    "category": "Electronic Devices",
+    "productType": "E-reader",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "80",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "storageCapacity_s": "8GB",
+        "operatingSystem_s": "Linux"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "Likebook Mars E-Reader, 7.8' Carta Touch Screen",
+    "brand": "Likebook Mars",
+    "category": "Electronic Devices",
+    "productType": "E-reader",
+    "docType": "product",
+    "skus": [
+      {
+        "id": "90",
+        "docType": "sku",
+        "colorFamily_s": "Black",
+        "storageCapacity_s": "16GB",
+        "operatingSystem_s": "Android"
+      }
+    ]
   }
 ]

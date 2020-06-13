@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(facet, i) in facets" :key="i">
-      <h1 class="title">{{ facet.name }}</h1>
+      <h1 class="is-size-5">{{ facet.name }}</h1>
       <div class="fields">
         <div v-for="(bucket, j) in facet.buckets.slice(0, 5)" :key="j">
           <b-checkbox

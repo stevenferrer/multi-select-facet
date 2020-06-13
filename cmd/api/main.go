@@ -17,16 +17,20 @@ import (
 	solrschema "github.com/stevenferrer/solr-go/schema"
 )
 
-type M = map[string]interface{}
+// Any is a convenience type for interface{}
+type Any = interface{}
+
+// Map is a convenience type for map[string]interface{}
+type Map = map[string]Any
 
 const (
-	collection = "multi-select-demo"
-	dataPath   = "phones.json"
+	dataPath = "products.json"
 )
 
 func main() {
-	initSchema := flag.Bool("init-schema", false, "initialize solr schema")
-	index := flag.Bool("index", false, "index products")
+	collection := flag.String("collection", "multi-select-demo", "specify the name of collection")
+	initSchema := flag.Bool("initialize-schema", false, "initialize solr schema")
+	index := flag.Bool("index-data", false, "index the data")
 	flag.Parse()
 
 	solrClient := solr.NewClient("localhost", 8983)
@@ -34,7 +38,7 @@ func main() {
 	ctx := context.Background()
 	if *initSchema {
 		log.Print("initializing solr schema...")
-		err := initSolrSchema(ctx, solrClient.Schema())
+		err := initSolrSchema(ctx, *collection, solrClient.Schema())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -42,7 +46,7 @@ func main() {
 
 	if *index {
 		log.Println("indexing products...")
-		err := indexProducts(ctx, solrClient.Index())
+		err := indexProducts(ctx, *collection, solrClient.Index())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -63,6 +67,7 @@ func main() {
 
 	// search handler
 	r.Method(http.MethodGet, "/search", &searchHandler{
+		collection: *collection,
 		solrClient: solrClient,
 	})
 
@@ -74,7 +79,8 @@ func main() {
 	}
 }
 
-func initSolrSchema(ctx context.Context, schemaClient solrschema.Client) error {
+func initSolrSchema(ctx context.Context, collection string,
+	schemaClient solrschema.Client) error {
 	// define the fields
 	fields := []solrschema.Field{
 		{
@@ -116,31 +122,29 @@ func initSolrSchema(ctx context.Context, schemaClient solrschema.Client) error {
 		}
 	}
 
-	// define copy field
-	err := schemaClient.AddCopyField(ctx, collection, solrschema.CopyField{
-		Source: "*",
-		Dest:   "_text_",
-	})
-	if err != nil {
-		return errors.Wrap(err, "add copy field")
-	}
-
 	return nil
 }
 
-func indexProducts(ctx context.Context, indexClient solrindex.JSONClient) error {
+func indexProducts(ctx context.Context, collection string,
+	indexClient solrindex.JSONClient) error {
 	b, err := ioutil.ReadFile(dataPath)
 	if err != nil {
 		return err
 	}
 
-	var docs []M
+	var docs []Map
 	err = json.Unmarshal(b, &docs)
 	if err != nil {
 		return err
 	}
 
-	err = indexClient.AddMultiple(ctx, collection, docs)
+	err = indexClient.AddDocs(ctx, collection, docs)
+	if err != nil {
+		return err
+	}
+
+	// commit updates
+	err = indexClient.Commit(ctx, collection)
 	if err != nil {
 		return err
 	}
