@@ -1,5 +1,6 @@
 <template>
   <div class="container" id="app">
+    <br />
     <div class="columns">
       <div class="column is-narrow">
         <Filters :facets="facets" @changed="onChanged" />
