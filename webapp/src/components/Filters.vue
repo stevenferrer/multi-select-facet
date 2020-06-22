@@ -53,10 +53,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    filtered: {
-      type: Object,
-      default: () => {},
-    },
   },
   methods: {
     onChecked() {
