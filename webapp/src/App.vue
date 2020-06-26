@@ -6,6 +6,8 @@
         <Filters :facets="facets" @changed="onChanged" />
       </div>
       <div class="column">
+        <Search />
+        <br />
         <div class="columns is-multiline is-mobile">
           <div
             v-for="(product, i) in products"
@@ -23,6 +25,7 @@
 <script>
 import Filters from "./components/Filters";
 import Product from "./components/Product";
+import Search from "./components/Search";
 
 async function search(filters) {
   if (!filters) {
@@ -80,6 +83,7 @@ export default {
   components: {
     Filters,
     Product,
+    Search,
   },
   data() {
     return {
