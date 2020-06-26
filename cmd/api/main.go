@@ -71,6 +71,11 @@ func main() {
 		solrClient: solrClient,
 	})
 
+	r.Method(http.MethodGet, "/suggest", &suggestHandler{
+		collection: *collection,
+		solrClient: solrClient,
+	})
+
 	addr := ":8081"
 	log.Printf("listening on %s\n", addr)
 	err := http.ListenAndServe(addr, r)
@@ -80,7 +85,33 @@ func main() {
 }
 
 func initSolrSchema(ctx context.Context, collection string,
-	schemaClient solrschema.Client) error {
+	schemaClient solrschema.Client) (err error) {
+	fieldTypes := []solrschema.FieldType{
+		// suggest field type
+		{
+			Name:                 "text_suggest",
+			Class:                "solr.TextField",
+			PositionIncrementGap: "100",
+			Analyzer: &solrschema.Analyzer{
+				Tokenizer: &solrschema.Tokenizer{
+					Class: "solr.StandardTokenizerFactory",
+				},
+				Filters: []solrschema.Filter{
+					{
+						Class: "solr.LowerCaseFilterFactory",
+					},
+				},
+			},
+		},
+	}
+
+	for _, fieldType := range fieldTypes {
+		err = schemaClient.AddFieldType(ctx, collection, fieldType)
+		if err != nil {
+			return errors.Wrap(err, "add field type")
+		}
+	}
+
 	// define the fields
 	fields := []solrschema.Field{
 		{
@@ -113,12 +144,31 @@ func initSolrSchema(ctx context.Context, collection string,
 			Indexed: true,
 			Stored:  true,
 		},
+		{
+			Name:   "suggest",
+			Type:   "text_suggest",
+			Stored: true,
+		},
 	}
 
 	for _, field := range fields {
-		err := schemaClient.AddField(ctx, collection, field)
+		err = schemaClient.AddField(ctx, collection, field)
 		if err != nil {
 			return errors.Wrap(err, "add field")
+		}
+	}
+
+	copyFields := []solrschema.CopyField{
+		{
+			Source: "name",
+			Dest:   "suggest",
+		},
+	}
+
+	for _, copyField := range copyFields {
+		err = schemaClient.AddCopyField(ctx, collection, copyField)
+		if err != nil {
+			return errors.Wrap(err, "add copy field")
 		}
 	}
 
@@ -132,13 +182,18 @@ func indexProducts(ctx context.Context, collection string,
 		return err
 	}
 
-	var docs []Map
-	err = json.Unmarshal(b, &docs)
+	var products []Map
+	err = json.Unmarshal(b, &products)
 	if err != nil {
 		return err
 	}
 
-	err = indexClient.AddDocs(ctx, collection, docs)
+	docs := solrindex.NewDocs()
+	for _, product := range products {
+		docs.AddDoc(product)
+	}
+
+	err = indexClient.AddDocuments(ctx, collection, docs)
 	if err != nil {
 		return err
 	}
