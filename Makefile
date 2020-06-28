@@ -1,5 +1,5 @@
 SOLR_INST ?="solr-multi-select-facet-demo" 
-COLLECTION ?= "multi-select-demo"
+COLLECTION ?= "multi-select-facet-demo"
 
 .PHONY: solr
 solr: stop-solr
