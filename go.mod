@@ -3,7 +3,6 @@ module github.com/stevenferrer/multi-select-facet
 go 1.14
 
 require (
-	github.com/davecgh/go-spew v1.1.0
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/cors v1.1.1
 	github.com/pkg/errors v0.9.1
