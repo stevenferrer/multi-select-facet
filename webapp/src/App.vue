@@ -8,8 +8,6 @@
       <div class="column">
         <Search @selected="onSelected" />
         <br />
-        {{ query }}
-        <br />
 
         <div class="columns is-multiline is-mobile">
           <div

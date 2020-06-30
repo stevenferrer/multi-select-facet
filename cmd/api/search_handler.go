@@ -161,7 +161,10 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp["query"] = query
+	debug := r.URL.Query().Get("debug") == "true"
+	if debug {
+		resp["query"] = query
+	}
 
 	w.Header().Add("content-type", "application/json")
 	err = json.NewEncoder(w).Encode(resp)
