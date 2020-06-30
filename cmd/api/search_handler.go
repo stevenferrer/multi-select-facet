@@ -128,6 +128,15 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	q := r.URL.Query().Get("q")
+	if len(q) == 0 {
+		q = "*"
+	} else {
+		q = fmt.Sprintf("%q", q)
+	}
+
+	productFilters = append(productFilters, fmt.Sprintf("{!tag=top}_text_:%s", q))
+
 	query := Map{
 		"query": "{!parent tag=top filters=$skuFilters which=$product score=total v=$sku}",
 		"queries": Map{

@@ -20,15 +20,9 @@ func (h *suggestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dict := "mySuggester"
-	suggestResp, err := h.solrClient.Suggester().
-		Suggest(r.Context(), suggester.Request{
-			Collection: h.collection,
-			Params: suggester.Params{
-				Query:        q,
-				Dictionaries: []string{dict},
-			},
-		})
+	dict := "default"
+	suggestResp, err := h.solrClient.Suggester().Suggest(r.Context(), h.collection,
+		suggester.Params{Query: q, Dictionaries: []string{dict}})
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return

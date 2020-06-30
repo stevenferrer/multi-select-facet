@@ -6,8 +6,11 @@
         <Filters :facets="facets" @changed="onChanged" />
       </div>
       <div class="column">
-        <Search />
+        <Search @selected="onSelected" />
         <br />
+        {{ query }}
+        <br />
+
         <div class="columns is-multiline is-mobile">
           <div
             v-for="(product, i) in products"
@@ -27,12 +30,14 @@ import Filters from "./components/Filters";
 import Product from "./components/Product";
 import Search from "./components/Search";
 
-async function search(filters) {
+async function search(query, filters) {
   if (!filters) {
     filters = [];
   }
 
-  const url = new URL("http://localhost:8081/search");
+  const url = new URL(
+    `http://localhost:8081/search?q=${encodeURIComponent(query)}`
+  );
   filters.forEach((filter) => {
     url.searchParams.append(filter.param, filter.selected.join(","));
   });
@@ -87,12 +92,13 @@ export default {
   },
   data() {
     return {
+      query: "",
       products: null,
       facets: null,
     };
   },
   async mounted() {
-    const { products, facets } = await search();
+    const { products, facets } = await search(this.query);
     this.products = products;
     this.facets = facets;
   },
@@ -105,7 +111,25 @@ export default {
           return { name, param, selected };
         });
 
-      const { products, facets } = await search(filters);
+      const { products, facets } = await search(this.query, filters);
+      this.products = products;
+      this.facets = facets;
+    },
+    async onSelected(option) {
+      if (!option) return;
+
+      const { term: query } = option;
+
+      this.query = query;
+
+      const { facets: oldFacet } = this;
+      const filters = oldFacet
+        .filter(({ selected }) => selected.length > 0)
+        .map(({ name, param, selected }) => {
+          return { name, param, selected };
+        });
+
+      const { products, facets } = await search(query, filters);
       this.products = products;
       this.facets = facets;
     },

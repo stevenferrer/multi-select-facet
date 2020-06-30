@@ -8,7 +8,8 @@
         icon="search"
         :loading="isFetching"
         @typing="getAsyncData"
-        @select="(option) => (selected = option)"
+        @select="onSelected"
+        keep-first
         clearable
       >
         <template slot-scope="props">
@@ -31,15 +32,15 @@ export default {
     };
   },
   methods: {
-    getAsyncData: debounce(function(name) {
-      if (!name.length) {
+    getAsyncData: debounce(function(query) {
+      if (!query.length) {
         this.data = [];
         return;
       }
       this.isFetching = true;
 
       this.$http
-        .get(`http://localhost:8081/suggest?q=${encodeURIComponent(name)}`)
+        .get(`http://localhost:8081/suggest?q=${encodeURIComponent(query)}`)
         .then(({ data }) => {
           this.data = [];
           data.suggestions.forEach((item) => this.data.push(item));
@@ -52,6 +53,11 @@ export default {
           this.isFetching = false;
         });
     }, 500),
+    onSelected(option) {
+      this.selected = option;
+
+      this.$emit("selected", option);
+    },
   },
 };
 </script>

@@ -100,76 +100,76 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 	// auto-suggest field type
 	fieldTypes := []solrschema.FieldType{
 
-		// // approach #1
-		// // see: https://blog.griddynamics.com/implementing-autocomplete-with-solr/
-		// {
-		// 	Name:                 "text_suggest",
-		// 	Class:                "solr.TextField",
-		// 	PositionIncrementGap: "100",
-		// 	IndexAnalyzer: &solrschema.Analyzer{
-		// 		Tokenizer: &solrschema.Tokenizer{
-		// 			Class: "solr.StandardTokenizerFactory",
-		// 		},
-		// 		Filters: []solrschema.Filter{
-		// 			{
-		// 				Class: "solr.LowerCaseFilterFactory",
-		// 			},
-		// 			{
-		// 				Class:       "solr.EdgeNGramFilterFactory",
-		// 				MinGramSize: 1,
-		// 				MaxGramSize: 100,
-		// 			},
-		// 		},
-		// 	},
-		// 	QueryAnalyzer: &solrschema.Analyzer{
-		// 		Tokenizer: &solrschema.Tokenizer{
-		// 			Class: "solr.KeywordTokenizerFactory",
-		// 		},
-		// 		Filters: []solrschema.Filter{
-		// 			{
-		// 				Class: "solr.LowerCaseFilterFactory",
-		// 			},
-		// 		},
-		// 	},
-		// },
-
-		// approach #2
-		// see: https://blog.griddynamics.com/implement-autocomplete-search-for-large-e-commerce-catalogs/
+		// approach #1
+		// see: https://blog.griddynamics.com/implementing-autocomplete-with-solr/
 		{
-			Name:   "text_suggest",
-			Class:  "solr.TextField",
-			Stored: true,
+			Name:                 "text_suggest",
+			Class:                "solr.TextField",
+			PositionIncrementGap: "100",
 			IndexAnalyzer: &solrschema.Analyzer{
 				Tokenizer: &solrschema.Tokenizer{
-					Class: "solr.WhitespaceTokenizerFactory",
+					Class: "solr.StandardTokenizerFactory",
 				},
 				Filters: []solrschema.Filter{
 					{
 						Class: "solr.LowerCaseFilterFactory",
 					},
 					{
-						Class: "solr.ASCIIFoldingFilterFactory",
+						Class:       "solr.EdgeNGramFilterFactory",
+						MinGramSize: 1,
+						MaxGramSize: 100,
 					},
 				},
 			},
 			QueryAnalyzer: &solrschema.Analyzer{
 				Tokenizer: &solrschema.Tokenizer{
-					Class: "solr.WhitespaceTokenizerFactory",
+					Class: "solr.KeywordTokenizerFactory",
 				},
 				Filters: []solrschema.Filter{
 					{
 						Class: "solr.LowerCaseFilterFactory",
 					},
-					{
-						Class: "solr.ASCIIFoldingFilterFactory",
-					},
-					{
-						Class:    "solr.SynonymGraphFilterFactory",
-						Synonyms: "synonyms.txt",
-					},
 				},
 			},
 		},
+
+		// // approach #2
+		// // see: https://blog.griddynamics.com/implement-autocomplete-search-for-large-e-commerce-catalogs/
+		// {
+		// 	Name:   "text_suggest",
+		// 	Class:  "solr.TextField",
+		// 	Stored: true,
+		// 	IndexAnalyzer: &solrschema.Analyzer{
+		// 		Tokenizer: &solrschema.Tokenizer{
+		// 			Class: "solr.WhitespaceTokenizerFactory",
+		// 		},
+		// 		Filters: []solrschema.Filter{
+		// 			{
+		// 				Class: "solr.LowerCaseFilterFactory",
+		// 			},
+		// 			{
+		// 				Class: "solr.ASCIIFoldingFilterFactory",
+		// 			},
+		// 		},
+		// 	},
+		// 	QueryAnalyzer: &solrschema.Analyzer{
+		// 		Tokenizer: &solrschema.Tokenizer{
+		// 			Class: "solr.WhitespaceTokenizerFactory",
+		// 		},
+		// 		Filters: []solrschema.Filter{
+		// 			{
+		// 				Class: "solr.LowerCaseFilterFactory",
+		// 			},
+		// 			{
+		// 				Class: "solr.ASCIIFoldingFilterFactory",
+		// 			},
+		// 			{
+		// 				Class:    "solr.SynonymGraphFilterFactory",
+		// 				Synonyms: "synonyms.txt",
+		// 			},
+		// 		},
+		// 	},
+		// },
 	}
 
 	for _, fieldType := range fieldTypes {
@@ -247,6 +247,27 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 			Source: "*_s",
 			Dest:   "suggest",
 		},
+
+		{
+			Source: "name",
+			Dest:   "_text_",
+		},
+		{
+			Source: "category",
+			Dest:   "_text_",
+		},
+		{
+			Source: "brand",
+			Dest:   "_text_",
+		},
+		{
+			Source: "productType",
+			Dest:   "_text_",
+		},
+		{
+			Source: "*_s",
+			Dest:   "_text_",
+		},
 	}
 
 	for _, copyField := range copyFields {
@@ -267,7 +288,7 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 			"name":  "suggest",
 			"class": "solr.SuggestComponent",
 			"suggester": map[string]string{
-				"name":                     "mySuggester",
+				"name":                     "default",
 				"lookupImpl":               "FuzzyLookupFactory",
 				"dictionaryImpl":           "DocumentDictionaryFactory",
 				"field":                    "suggest",
@@ -285,7 +306,7 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 			"defaults": map[string]Any{
 				"suggest":            true,
 				"suggest.count":      10,
-				"suggest.dictionary": "mySuggester",
+				"suggest.dictionary": "default",
 			},
 			"components": []string{"suggest"},
 		},
@@ -301,7 +322,7 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 }
 
 func indexProducts(ctx context.Context, collection string,
-	indexClient solrindex.JSONClient) error {
+	indexClient solrindex.Client) error {
 	b, err := ioutil.ReadFile(dataPath)
 	if err != nil {
 		return err
