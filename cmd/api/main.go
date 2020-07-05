@@ -283,11 +283,10 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 func initSuggestConfig(ctx context.Context, collection string, configClient solrconfig.Client) error {
 	// suggester configs
 	addSuggestComponent := solrconfig.NewComponentCommand(
-		solrconfig.AddSearchComponent,
-		map[string]Any{
+		solrconfig.AddSearchComponent, Map{
 			"name":  "suggest",
 			"class": "solr.SuggestComponent",
-			"suggester": map[string]string{
+			"suggester": Map{
 				"name":                     "default",
 				"lookupImpl":               "FuzzyLookupFactory",
 				"dictionaryImpl":           "DocumentDictionaryFactory",
@@ -298,12 +297,11 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 	)
 
 	addSuggestHandler := solrconfig.NewComponentCommand(
-		solrconfig.AddRequestHandler,
-		map[string]Any{
+		solrconfig.AddRequestHandler, Map{
 			"name":    "/suggest",
 			"class":   "solr.SearchHandler",
 			"startup": "lazy",
-			"defaults": map[string]Any{
+			"defaults": Map{
 				"suggest":            true,
 				"suggest.count":      10,
 				"suggest.dictionary": "default",

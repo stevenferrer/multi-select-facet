@@ -212,7 +212,7 @@ func buildResp(queryResp *query.Response) (Map, error) {
 				return nil, errors.New("val is not string")
 			}
 
-			buckets = append(buckets, map[string]interface{}{
+			buckets = append(buckets, Map{
 				"val":          val,
 				"skuCount":     int(skuCount),
 				"productCount": int(productCount),

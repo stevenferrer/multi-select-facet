@@ -40,7 +40,7 @@ func (h *suggestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}{Term: suggest.Term})
 	}
 
-	resp := map[string]interface{}{
+	resp := Map{
 		"numFound":    termBody.NumFound,
 		"suggestions": suggestions,
 	}
