@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/stevenferrer/solr-go"
-	"github.com/stevenferrer/solr-go/query"
+	"github.com/sf9v/solr-go"
+	"github.com/sf9v/solr-go/query"
 )
 
 // searchHandler is the search handler

@@ -13,10 +13,10 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/pkg/errors"
 
-	solr "github.com/stevenferrer/solr-go"
-	solrconfig "github.com/stevenferrer/solr-go/config"
-	solrindex "github.com/stevenferrer/solr-go/index"
-	solrschema "github.com/stevenferrer/solr-go/schema"
+	solr "github.com/sf9v/solr-go"
+	solrconfig "github.com/sf9v/solr-go/config"
+	solrindex "github.com/sf9v/solr-go/index"
+	solrschema "github.com/sf9v/solr-go/schema"
 )
 
 // Any is a convenience type for interface{}
