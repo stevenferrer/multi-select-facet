@@ -16,12 +16,26 @@ Wait for a few seconds while Solr is loading.
 
 2. Run the API
 ```console
-$ cd cmd/api && go build -v && ./api -init-schema -index-data -init-suggester
+// cd to api 
+$ cd cmd/api
+
+// build the api
+$ go build -v
+
+// start the api
+$ ./api -init-schema -index-data -init-suggester
 ```
 
 3. Run the web app (open a new terminal tab)
 ```console
-$ cd webapp && yarn serve
+// cd to web app folder
+$ cd webapp
+
+// install dependencies
+$ yarn // or npm install
+
+// start the web app
+$ yarn serve // or npm run serve
 ```
 
 4. Open http://localhost:8080 in your browser and start playing with it!
