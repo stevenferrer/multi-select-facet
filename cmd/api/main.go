@@ -97,9 +97,9 @@ func main() {
 }
 
 func initSolrSchema(ctx context.Context, collection string, solrClient solr.Client) (err error) {
+
 	// auto-suggest field type
 	fieldTypes := []solrschema.FieldType{
-
 		// // approach #1
 		// // see: https://blog.griddynamics.com/implementing-autocomplete-with-solr/
 		// {
@@ -136,9 +136,9 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 		// approach #2
 		// see: https://blog.griddynamics.com/implement-autocomplete-search-for-large-e-commerce-catalogs/
 		{
-			Name:   "text_suggest",
-			Class:  "solr.TextField",
-			Stored: true,
+			Name:                 "text_suggest",
+			Class:                "solr.TextField",
+			PositionIncrementGap: "100",
 			IndexAnalyzer: &solrschema.Analyzer{
 				Tokenizer: &solrschema.Tokenizer{
 					Class: "solr.WhitespaceTokenizerFactory",
@@ -149,6 +149,11 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 					},
 					{
 						Class: "solr.ASCIIFoldingFilterFactory",
+					},
+					{
+						Class:       "solr.EdgeNGramFilterFactory",
+						MinGramSize: 1,
+						MaxGramSize: 20,
 					},
 				},
 			},
@@ -182,39 +187,29 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 	// define the fields
 	fields := []solrschema.Field{
 		{
-			Name:    "docType",
-			Type:    "string",
-			Indexed: true,
-			Stored:  true,
+			Name: "docType",
+			Type: "string",
 		},
 		{
-			Name:    "name",
-			Type:    "text_general",
-			Indexed: true,
-			Stored:  true,
+			Name: "name",
+			Type: "text_general",
 		},
 		{
-			Name:    "category",
-			Type:    "text_gen_sort",
-			Indexed: true,
-			Stored:  true,
+			Name: "category",
+			Type: "text_gen_sort",
 		},
 		{
-			Name:    "brand",
-			Type:    "text_gen_sort",
-			Indexed: true,
-			Stored:  true,
+			Name: "brand",
+			Type: "text_gen_sort",
 		},
 		{
-			Name:    "productType",
-			Type:    "string",
-			Indexed: true,
-			Stored:  true,
+			Name: "productType",
+			Type: "string",
 		},
 		{
 			Name:        "suggest",
 			Type:        "text_suggest",
-			Stored:      true,
+			Stored:      false,
 			MultiValued: true,
 		},
 	}
@@ -229,22 +224,6 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 	copyFields := []solrschema.CopyField{
 		{
 			Source: "name",
-			Dest:   "suggest",
-		},
-		{
-			Source: "category",
-			Dest:   "suggest",
-		},
-		{
-			Source: "brand",
-			Dest:   "suggest",
-		},
-		{
-			Source: "productType",
-			Dest:   "suggest",
-		},
-		{
-			Source: "*_s",
 			Dest:   "suggest",
 		},
 
@@ -288,7 +267,7 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 			"class": "solr.SuggestComponent",
 			"suggester": Map{
 				"name":                     "default",
-				"lookupImpl":               "FuzzyLookupFactory",
+				"lookupImpl":               "AnalyzingInfixLookupFactory",
 				"dictionaryImpl":           "DocumentDictionaryFactory",
 				"field":                    "suggest",
 				"suggestAnalyzerFieldType": "text_suggest",

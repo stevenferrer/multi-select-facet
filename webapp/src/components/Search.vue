@@ -13,7 +13,7 @@
         clearable
       >
         <template slot-scope="props">
-          {{ props.option.term }}
+          <span v-html="props.option.term"></span>
         </template>
       </b-autocomplete>
     </b-field>

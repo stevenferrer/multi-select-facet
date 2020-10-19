@@ -7,12 +7,21 @@ Blog post: [Multi-Select Facet with Solr, Vue and Go](https://sf9v.github.io/pos
 
 ## Running the example
 
-1. Run Solr in docker. 
+1. Run Solr in `docker`.
 
 ```console
 $ make solr
 ```
-Wait for a few seconds while Solr is loading.
+
+Or using [podman](https://podman.io/).
+
+```console
+$ DOCKER=podman make solr
+```
+The above commands starts Solr container and pre-creates `multi-select-facet-demo` collection.
+
+Wait for a few seconds until Solr has completed loading.
+
 
 2. Run the API
 ```console
@@ -39,7 +48,6 @@ $ yarn serve // or npm run serve
 ```
 
 4. Open http://localhost:8080 in your browser and start playing with it!
-
 
 
 ## Contributing
