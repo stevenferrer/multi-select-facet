@@ -204,7 +204,7 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 
 	err = solrClient.AddFieldTypes(ctx, collection, fieldTypes...)
 	if err != nil {
-		return errors.Wrap(err, "add field type")
+		return errors.Wrap(err, "add field types")
 	}
 
 	// define the fields

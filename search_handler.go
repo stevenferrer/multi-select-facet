@@ -73,32 +73,28 @@ var facetConfigs = []facetConfig{
 func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	facets := []solr.Faceter{}
 	productFilters, skuFilters := []string{}, []string{}
-	for _, fctCfg := range facetConfigs {
+	for _, fc := range facetConfigs {
+		filterVals := strings.Split(r.URL.Query().Get(fc.urlParam), ",")
 		tagVals := []string{}
-		filterVals := strings.Split(r.URL.Query().Get(fctCfg.urlParam), ",")
 		for _, val := range filterVals {
 			if val == "" {
 				continue
 			}
-			tagVals = append(tagVals, fctCfg.field+":"+val)
+			tagVals = append(tagVals, fc.field+":"+val)
 		}
 
-		if !fctCfg.isChild {
+		if !fc.isChild {
 			// product filters
 			if len(tagVals) > 0 {
-				filterQuery := solr.NewStandardQueryParser().Tag("top").
-					Query("'" + strings.Join(tagVals, " OR ") + "'").
-					BuildParser()
-				productFilters = append(productFilters, filterQuery)
+				productFilters = append(productFilters, solr.NewStandardQueryParser().
+					Tag("top").Query("'"+strings.Join(tagVals, " OR ")+"'").BuildParser())
 			} else {
-				filterQuery := solr.NewStandardQueryParser().Tag("top").
-					Query(fctCfg.field + ":*").BuildParser()
-				productFilters = append(productFilters, filterQuery)
+				productFilters = append(productFilters, solr.NewStandardQueryParser().
+					Tag("top").Query(fc.field+":*").BuildParser())
 			}
 
-			termsFacet := solr.NewTermsFacet(fctCfg.facet).
-				Field(fctCfg.field).Limit(-1).
-				AddToFacet("productCount", "uniqueBlock(_root_)")
+			termsFacet := solr.NewTermsFacet(fc.facet).Field(fc.field).
+				Limit(-1).AddToFacet("productCount", "uniqueBlock(_root_)")
 			facets = append(facets, termsFacet)
 
 			continue
@@ -106,60 +102,47 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		// sku filters
 		if len(tagVals) > 0 {
-			filterQuery := solr.NewStandardQueryParser().Tag(fctCfg.field).
-				Query("'" + strings.Join(tagVals, " OR ") + "'").BuildParser()
-			skuFilters = append(skuFilters, filterQuery)
+			skuFilters = append(skuFilters, solr.NewStandardQueryParser().Tag(fc.field).
+				Query("'"+strings.Join(tagVals, " OR ")+"'").BuildParser())
 		} else {
-			filterQuery := solr.NewStandardQueryParser().Tag(fctCfg.field).
-				Query(fctCfg.field + ":*").BuildParser()
-			skuFilters = append(skuFilters, filterQuery)
+			skuFilters = append(skuFilters, solr.NewStandardQueryParser().Tag(fc.field).
+				Query(fc.field+":*").BuildParser())
 		}
 
-		facet := solr.NewTermsFacet(fctCfg.facet).
-			Field(fctCfg.field).Limit(-1).
+		termsFacet := solr.NewTermsFacet(fc.facet).
+			Field(fc.field).Limit(-1).
 			AddToDomain("excludeTags", "top").
 			AddToDomain("filter", []string{
-				solr.NewFiltersQueryParser().
-					Param("$skuFilters").
-					ExcludeTags(fctCfg.field).
-					Query("$sku").BuildParser(),
-				solr.NewChildrenQueryParser().
-					Of("$product").
-					Filters("$filter").
-					Query("$product").
-					BuildParser(),
+				solr.NewFiltersQueryParser().Param("$skuFilters").
+					ExcludeTags(fc.field).Query("$sku").BuildParser(),
+				solr.NewChildrenQueryParser().Of("$product").Filters("$filter").
+					Query("$product").BuildParser(),
 			}).
 			AddToFacet("productCount", "uniqueBlock(_root_)")
 
-		facets = append(facets, facet)
+		facets = append(facets, termsFacet)
 	}
 
-	q := r.URL.Query().Get("q")
-	if len(q) == 0 {
-		q = "*"
+	queryStr := r.URL.Query().Get("q")
+	if len(queryStr) == 0 {
+		queryStr = "*"
 	} else {
-		q = fmt.Sprintf("%q", q)
+		queryStr = fmt.Sprintf("%q", queryStr)
 	}
 
 	productFilters = append(productFilters, solr.NewStandardQueryParser().
-		Tag("top").Query("_text_:"+q).BuildParser())
+		Tag("top").Query("_text_:"+queryStr).BuildParser())
 
-	query := solr.NewQuery().
-		QueryParser(
-			solr.NewParentQueryParser().
-				Tag("top").
-				Filters("$skuFilters").
-				Which("$product").
-				Score("total").
-				Query("$sku"),
-		).
+	queryParser := solr.NewParentQueryParser().Tag("top").Filters("$skuFilters").
+		Which("$product").Score("total").Query("$sku")
+	query := solr.NewQuery().QueryParser(queryParser).
+		Filters(productFilters...).
+		Facets(facets...).
 		Queries(solr.M{
 			"product":    "docType:product",
 			"sku":        "docType:sku",
 			"skuFilters": skuFilters,
-		}).
-		Filters(productFilters...).
-		Facets(facets...)
+		})
 
 	queryResp, err := h.solrClient.Query(r.Context(), h.collection, query)
 	if err != nil {
@@ -168,7 +151,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// extract products and facets from query response
-	resp, err := buildResp(queryResp)
+	resp, err := buildResponse(queryResp)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -185,28 +168,28 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func buildResp(queryResp *solr.QueryResponse) (solr.M, error) {
+func buildResponse(response *solr.QueryResponse) (solr.M, error) {
 	var facets = []solr.M{}
-	for name, v := range queryResp.Facets {
+	for name, v := range response.Facets {
 		if name == "count" {
 			continue
 		}
 
 		vv, ok := v.(map[string]interface{})
 		if !ok {
-			return nil, errors.New("v is not M")
+			return nil, errors.New("v is not map[string]interface{}")
 		}
 
 		bucks, ok := vv["buckets"].([]interface{})
 		if !ok {
-			return nil, errors.New("vv is not []Any")
+			return nil, errors.New("vv is not []interface{}")
 		}
 
 		buckets := []solr.M{}
 		for _, bk := range bucks {
 			buck, ok := bk.(map[string]interface{})
 			if !ok {
-				return nil, errors.New("bucket is not M")
+				return nil, errors.New("bucket is not map[string]interface{}")
 			}
 
 			productCount, ok := buck["productCount"].(float64)
@@ -233,9 +216,9 @@ func buildResp(queryResp *solr.QueryResponse) (solr.M, error) {
 		}
 
 		var param string
-		for _, fctCfg := range facetConfigs {
-			if fctCfg.facet == name {
-				param = fctCfg.urlParam
+		for _, fc := range facetConfigs {
+			if fc.facet == name {
+				param = fc.urlParam
 			}
 		}
 
@@ -247,7 +230,7 @@ func buildResp(queryResp *solr.QueryResponse) (solr.M, error) {
 	}
 
 	var products = []solr.M{}
-	for _, doc := range queryResp.Response.Documents {
+	for _, doc := range response.Response.Documents {
 		id, ok := doc["id"].(string)
 		if !ok {
 			return nil, errors.New("id not found or is not string")
@@ -255,17 +238,17 @@ func buildResp(queryResp *solr.QueryResponse) (solr.M, error) {
 
 		name, ok := doc["name"].([]interface{})
 		if !ok {
-			return nil, errors.New("name not found or is not []Any")
+			return nil, errors.New("name not found or is not []interface{}")
 		}
 
 		category, ok := doc["category"].([]interface{})
 		if !ok {
-			return nil, errors.New("category not found or is not []Any")
+			return nil, errors.New("category not found or is not []interface{}")
 		}
 
 		brand, ok := doc["brand"].([]interface{})
 		if !ok {
-			return nil, errors.New("brand not found or is not []Any")
+			return nil, errors.New("brand not found or is not []interface{}")
 		}
 
 		productType, ok := doc["productType"].(string)
