@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -31,7 +33,8 @@ func main() {
 	baseURL := "http://localhost:8983"
 	solrClient := solr.NewJSONClient(baseURL)
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	if *createCollection {
 		log.Println("creating collection...")
@@ -91,15 +94,35 @@ func main() {
 	})
 
 	addr := ":8081"
-	log.Printf("listening on %s\n", addr)
-	err := http.ListenAndServe(addr, r)
-	if err != nil {
+	srvr := &http.Server{
+		Addr:           addr,
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	// Start the server
+	go func() {
+		log.Printf("Server listening on %s\n", addr)
+		if err := srvr.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	// setup signal capturing
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
+	// wait for SIGINT (pkill -2)
+	<-c
+
+	if err := srvr.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func initSolrSchema(ctx context.Context, collection string, solrClient solr.Client) (err error) {
-
 	// Auto-suggest field type
 	fieldTypes := []solr.FieldType{
 		// approach #1
@@ -179,11 +202,9 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 		},
 	}
 
-	for _, fieldType := range fieldTypes {
-		err = solrClient.AddFieldTypes(ctx, collection, fieldType)
-		if err != nil {
-			return errors.Wrap(err, "add field type")
-		}
+	err = solrClient.AddFieldTypes(ctx, collection, fieldTypes...)
+	if err != nil {
+		return errors.Wrap(err, "add field type")
 	}
 
 	// define the fields

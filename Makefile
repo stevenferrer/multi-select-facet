@@ -1,6 +1,10 @@
 PODMAN ?= podman
 SOLR ?="multi-select-facet-demo" 
 
+.PHONY: build-api
+build-api: 
+	go build -v -o api
+
 .PHONY: start-solr
 start-solr: stop-solr
 	$(PODMAN) run -d -p 8983:8983 --name $(SOLR) solr:8 solr -c -f
