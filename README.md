@@ -7,32 +7,25 @@ Blog post: [Multi-Select Facet with Solr, Vue and Go](https://sf9v.github.io/pos
 
 ## Running the example
 
-1. Run Solr in `docker`.
+1. Run Solr using [podman](https://podman.io/).
 
 ```console
-$ make solr
+$ make start-solr
 ```
 
-Or using [podman](https://podman.io/).
+Or using `docker`.
 
 ```console
-$ DOCKER=podman make solr
+$ PODMAN=docker make start-solr
 ```
-The above commands starts Solr container and pre-creates `multi-select-facet-demo` collection.
-
-Wait for a few seconds until Solr has completed loading.
-
 
 2. Run the API
 ```console
-// cd to api 
-$ cd cmd/api
-
 // build the api
-$ go build -v
+$ go build -v -o api
 
-// start the api
-$ ./api -init-schema -index-data -init-suggester
+// start the api with the initialization options
+$ ./api -create-collection -init-schema -index-data -init-suggester
 ```
 
 3. Run the web app (open a new terminal tab)
@@ -51,7 +44,7 @@ $ yarn serve // or npm run serve
 
 
 ## Contributing
-Please feel free to improve this by [sending a PR](https://github.com/sf9v/multi-select-facet/pulls) or [opening an issue](https://github.com/sf9v/multi-select-facet/issues).
+Feel free to improve this project by [make a pull-request](https://github.com/sf9v/multi-select-facet/pulls) or [opening an issue](https://github.com/sf9v/multi-select-facet/issues).
 
 ## License
 

@@ -5,12 +5,15 @@ import (
 	"net/http"
 
 	"github.com/sf9v/solr-go"
-	"github.com/sf9v/solr-go/suggester"
 )
 
 type suggestHandler struct {
 	collection string
 	solrClient solr.Client
+}
+
+type suggestion struct {
+	Term string `json:"term"`
 }
 
 func (h *suggestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +24,9 @@ func (h *suggestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dict := "default"
-	suggestResp, err := h.solrClient.Suggester().Suggest(r.Context(), h.collection,
-		suggester.Params{Query: q, Dictionaries: []string{dict}})
+	suggestParams := solr.NewSuggesterParams("suggest").
+		Build().Query(q).Dictionaries(dict)
+	suggestResp, err := h.solrClient.Suggest(r.Context(), h.collection, suggestParams)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -31,23 +35,17 @@ func (h *suggestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	suggest := *suggestResp.Suggest
 	termBody := suggest[dict][q]
 
-	suggestions := []struct {
-		Term string `json:"term"`
-	}{}
+	suggestions := []suggestion{}
 	for _, suggest := range termBody.Suggestions {
-		suggestions = append(suggestions, struct {
-			Term string `json:"term"`
-		}{Term: suggest.Term})
+		suggestions = append(suggestions, suggestion{
+			Term: suggest.Term,
+		})
 	}
 
-	resp := Map{
+	err = json.NewEncoder(w).Encode(solr.M{
 		"numFound":    termBody.NumFound,
 		"suggestions": suggestions,
-	}
-
-	w.Header().Add("content-type", "application/json")
-
-	err = json.NewEncoder(w).Encode(resp)
+	})
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}

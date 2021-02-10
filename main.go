@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -14,32 +13,35 @@ import (
 	"github.com/pkg/errors"
 
 	solr "github.com/sf9v/solr-go"
-	solrconfig "github.com/sf9v/solr-go/config"
-	solrindex "github.com/sf9v/solr-go/index"
-	solrschema "github.com/sf9v/solr-go/schema"
 )
 
-// Any is a convenience type for interface{}
-type Any = interface{}
-
-// Map is a convenience type for map[string]interface{}
-type Map = map[string]Any
-
 const (
-	dataPath = "products.json"
-	coll     = "multi-select-facet-demo"
+	dataPath          = "data/products.json"
+	defaultCollection = "multi-select-facet-demo"
 )
 
 func main() {
-	collection := flag.String("collection", coll, "specify the name of collection")
+	collection := flag.String("collection", defaultCollection, "specify the name of collection")
+	createCollection := flag.Bool("create-collection", false, "create solr collection")
 	initSchema := flag.Bool("init-schema", false, "initialize solr schema")
 	initSuggester := flag.Bool("init-suggester", false, "initialize suggester component")
 	indexData := flag.Bool("index-data", false, "index the products data")
 	flag.Parse()
 
-	solrClient := solr.NewClient("localhost", 8983)
+	baseURL := "http://localhost:8983"
+	solrClient := solr.NewJSONClient(baseURL)
 
 	ctx := context.Background()
+
+	if *createCollection {
+		log.Println("creating collection...")
+		err := solrClient.CreateCollection(ctx, solr.NewCollectionParams().
+			Name(*collection).NumShards(1).ReplicationFactor(1))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	if *initSchema {
 		log.Print("initializing solr schema...")
 		err := initSolrSchema(ctx, *collection, solrClient)
@@ -50,7 +52,7 @@ func main() {
 
 	if *indexData {
 		log.Println("indexing products...")
-		err := indexProducts(ctx, *collection, solrClient.Index())
+		err := indexProducts(ctx, *collection, solrClient)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -58,7 +60,7 @@ func main() {
 
 	if *initSuggester {
 		log.Println("initializing suggester component...")
-		err := initSuggestConfig(ctx, *collection, solrClient.Config())
+		err := initSuggestConfig(ctx, *collection, solrClient)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -98,52 +100,52 @@ func main() {
 
 func initSolrSchema(ctx context.Context, collection string, solrClient solr.Client) (err error) {
 
-	// auto-suggest field type
-	fieldTypes := []solrschema.FieldType{
-		// // approach #1
-		// // see: https://blog.griddynamics.com/implementing-autocomplete-with-solr/
-		// {
-		// 	Name:                 "text_suggest",
-		// 	Class:                "solr.TextField",
-		// 	PositionIncrementGap: "100",
-		// 	IndexAnalyzer: &solrschema.Analyzer{
-		// 		Tokenizer: &solrschema.Tokenizer{
-		// 			Class: "solr.StandardTokenizerFactory",
-		// 		},
-		// 		Filters: []solrschema.Filter{
-		// 			{
-		// 				Class: "solr.LowerCaseFilterFactory",
-		// 			},
-		// 			{
-		// 				Class:       "solr.EdgeNGramFilterFactory",
-		// 				MinGramSize: 1,
-		// 				MaxGramSize: 100,
-		// 			},
-		// 		},
-		// 	},
-		// 	QueryAnalyzer: &solrschema.Analyzer{
-		// 		Tokenizer: &solrschema.Tokenizer{
-		// 			Class: "solr.KeywordTokenizerFactory",
-		// 		},
-		// 		Filters: []solrschema.Filter{
-		// 			{
-		// 				Class: "solr.LowerCaseFilterFactory",
-		// 			},
-		// 		},
-		// 	},
-		// },
+	// Auto-suggest field type
+	fieldTypes := []solr.FieldType{
+		// approach #1
+		// Refer to https://blog.griddynamics.com/implementing-autocomplete-with-solr/
+		{
+			Name:                 "text_suggest_1",
+			Class:                "solr.TextField",
+			PositionIncrementGap: "100",
+			IndexAnalyzer: &solr.Analyzer{
+				Tokenizer: &solr.Tokenizer{
+					Class: "solr.StandardTokenizerFactory",
+				},
+				Filters: []solr.Filter{
+					{
+						Class: "solr.LowerCaseFilterFactory",
+					},
+					{
+						Class:       "solr.EdgeNGramFilterFactory",
+						MinGramSize: 1,
+						MaxGramSize: 100,
+					},
+				},
+			},
+			QueryAnalyzer: &solr.Analyzer{
+				Tokenizer: &solr.Tokenizer{
+					Class: "solr.KeywordTokenizerFactory",
+				},
+				Filters: []solr.Filter{
+					{
+						Class: "solr.LowerCaseFilterFactory",
+					},
+				},
+			},
+		},
 
 		// approach #2
-		// see: https://blog.griddynamics.com/implement-autocomplete-search-for-large-e-commerce-catalogs/
+		// Refer to https://blog.griddynamics.com/implement-autocomplete-search-for-large-e-commerce-catalogs/
 		{
 			Name:                 "text_suggest",
 			Class:                "solr.TextField",
 			PositionIncrementGap: "100",
-			IndexAnalyzer: &solrschema.Analyzer{
-				Tokenizer: &solrschema.Tokenizer{
+			IndexAnalyzer: &solr.Analyzer{
+				Tokenizer: &solr.Tokenizer{
 					Class: "solr.WhitespaceTokenizerFactory",
 				},
-				Filters: []solrschema.Filter{
+				Filters: []solr.Filter{
 					{
 						Class: "solr.LowerCaseFilterFactory",
 					},
@@ -157,11 +159,11 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 					},
 				},
 			},
-			QueryAnalyzer: &solrschema.Analyzer{
-				Tokenizer: &solrschema.Tokenizer{
+			QueryAnalyzer: &solr.Analyzer{
+				Tokenizer: &solr.Tokenizer{
 					Class: "solr.WhitespaceTokenizerFactory",
 				},
-				Filters: []solrschema.Filter{
+				Filters: []solr.Filter{
 					{
 						Class: "solr.LowerCaseFilterFactory",
 					},
@@ -178,14 +180,14 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 	}
 
 	for _, fieldType := range fieldTypes {
-		err = solrClient.Schema().AddFieldType(ctx, collection, fieldType)
+		err = solrClient.AddFieldTypes(ctx, collection, fieldType)
 		if err != nil {
 			return errors.Wrap(err, "add field type")
 		}
 	}
 
 	// define the fields
-	fields := []solrschema.Field{
+	fields := []solr.Field{
 		{
 			Name: "docType",
 			Type: "string",
@@ -214,14 +216,12 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 		},
 	}
 
-	for _, field := range fields {
-		err = solrClient.Schema().AddField(ctx, collection, field)
-		if err != nil {
-			return errors.Wrap(err, "add field")
-		}
+	err = solrClient.AddFields(ctx, collection, fields...)
+	if err != nil {
+		return errors.Wrap(err, "add fields")
 	}
 
-	copyFields := []solrschema.CopyField{
+	copyFields := []solr.CopyField{
 		{
 			Source: "name",
 			Dest:   "suggest",
@@ -249,48 +249,42 @@ func initSolrSchema(ctx context.Context, collection string, solrClient solr.Clie
 		},
 	}
 
-	for _, copyField := range copyFields {
-		err = solrClient.Schema().AddCopyField(ctx, collection, copyField)
-		if err != nil {
-			return errors.Wrap(err, "add copy field")
-		}
+	err = solrClient.AddCopyFields(ctx, collection, copyFields...)
+	if err != nil {
+		return errors.Wrap(err, "add copy fields")
 	}
 
 	return nil
 }
 
-func initSuggestConfig(ctx context.Context, collection string, configClient solrconfig.Client) error {
+func initSuggestConfig(ctx context.Context, collection string, solrClient solr.Client) error {
 	// suggester configs
-	addSuggestComponent := solrconfig.NewComponentCommand(
-		solrconfig.AddSearchComponent, Map{
-			"name":  "suggest",
-			"class": "solr.SuggestComponent",
-			"suggester": Map{
+	suggestComponent := solr.NewComponent(solr.SearchComponent).
+		Name("suggest").Class("solr.SuggestComponent").
+		Config(solr.M{
+			"suggester": solr.M{
 				"name":                     "default",
 				"lookupImpl":               "AnalyzingInfixLookupFactory",
 				"dictionaryImpl":           "DocumentDictionaryFactory",
 				"field":                    "suggest",
 				"suggestAnalyzerFieldType": "text_suggest",
 			},
-		},
-	)
+		})
 
-	addSuggestHandler := solrconfig.NewComponentCommand(
-		solrconfig.AddRequestHandler, Map{
-			"name":    "/suggest",
-			"class":   "solr.SearchHandler",
+	suggestHandler := solr.NewComponent(solr.RequestHandler).
+		Name("/suggest").Class("solr.SearchHandler").
+		Config(solr.M{
 			"startup": "lazy",
-			"defaults": Map{
+			"defaults": solr.M{
 				"suggest":            true,
 				"suggest.count":      10,
 				"suggest.dictionary": "default",
 			},
 			"components": []string{"suggest"},
-		},
-	)
+		})
 
-	err := configClient.SendCommands(ctx, collection,
-		addSuggestComponent, addSuggestHandler)
+	err := solrClient.AddComponents(ctx, collection,
+		suggestComponent, suggestHandler)
 	if err != nil {
 		return errors.Wrap(err, "add suggester configs")
 	}
@@ -299,30 +293,19 @@ func initSuggestConfig(ctx context.Context, collection string, configClient solr
 }
 
 func indexProducts(ctx context.Context, collection string,
-	indexClient solrindex.Client) error {
-	b, err := ioutil.ReadFile(dataPath)
+	solrClient solr.Client) error {
+	f, err := os.OpenFile(dataPath, os.O_RDONLY, 0644)
 	if err != nil {
 		return err
 	}
 
-	var products []Map
-	err = json.Unmarshal(b, &products)
-	if err != nil {
-		return err
-	}
-
-	docs := solrindex.NewDocs()
-	for _, product := range products {
-		docs.AddDoc(product)
-	}
-
-	err = indexClient.AddDocuments(ctx, collection, docs)
+	_, err = solrClient.Update(ctx, collection, solr.JSON, f)
 	if err != nil {
 		return err
 	}
 
 	// commit updates
-	err = indexClient.Commit(ctx, collection)
+	err = solrClient.Commit(ctx, collection)
 	if err != nil {
 		return err
 	}

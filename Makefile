@@ -1,11 +1,11 @@
-DOCKER ?= docker
-SOLR_INST ?="solr-multi-select-facet-demo" 
-COLLECTION ?= "multi-select-facet-demo"
+PODMAN ?= podman
+SOLR ?="multi-select-facet-demo" 
 
-.PHONY: solr
-solr: stop-solr
-	$(DOCKER) run -d -p 8983:8983 --name $(SOLR_INST) solr:latest solr-precreate $(COLLECTION)
+.PHONY: start-solr
+start-solr: stop-solr
+	$(PODMAN) run -d -p 8983:8983 --name $(SOLR) solr:8 solr -c -f
+	$(PODMAN) exec -it $(SOLR) bash -c 'sleep 5; wait-for-solr.sh --max-attempts 10 --wait-seconds 5'
 
 .PHONY: stop-solr
 stop-solr:
-	$(DOCKER) rm -f $(SOLR_INST) || true
+	$(PODMAN) rm -f $(SOLR) || true

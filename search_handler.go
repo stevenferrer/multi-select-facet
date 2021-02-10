@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/sf9v/solr-go"
-	"github.com/sf9v/solr-go/query"
 )
 
 // searchHandler is the search handler
@@ -72,7 +71,7 @@ var facetConfigs = []facetConfig{
 }
 
 func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	facetsMap := Map{}
+	facets := []solr.Faceter{}
 	productFilters, skuFilters := []string{}, []string{}
 	for _, fctCfg := range facetConfigs {
 		tagVals := []string{}
@@ -87,45 +86,52 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if !fctCfg.isChild {
 			// product filters
 			if len(tagVals) > 0 {
-				productFilters = append(productFilters, fmt.Sprintf("{!tag=top}%s", strings.Join(tagVals, " OR ")))
+				filterQuery := solr.NewStandardQueryParser().Tag("top").
+					Query("'" + strings.Join(tagVals, " OR ") + "'").
+					BuildParser()
+				productFilters = append(productFilters, filterQuery)
 			} else {
-				productFilters = append(productFilters, fmt.Sprintf("{!tag=top}%s:*", fctCfg.field))
+				filterQuery := solr.NewStandardQueryParser().Tag("top").
+					Query(fctCfg.field + ":*").BuildParser()
+				productFilters = append(productFilters, filterQuery)
 			}
 
-			facetsMap[fctCfg.facet] = Map{
-				"facet": Map{
-					"productCount": "uniqueBlock(_root_)",
-				},
-				"field": fctCfg.field,
-				"limit": -1,
-				"type":  "terms",
-			}
+			termsFacet := solr.NewTermsFacet(fctCfg.facet).
+				Field(fctCfg.field).Limit(-1).
+				AddToFacet("productCount", "uniqueBlock(_root_)")
+			facets = append(facets, termsFacet)
 
 			continue
 		}
 
 		// sku filters
 		if len(tagVals) > 0 {
-			skuFilters = append(skuFilters, fmt.Sprintf("{!tag=%s}%s", fctCfg.field, strings.Join(tagVals, " OR ")))
+			filterQuery := solr.NewStandardQueryParser().Tag(fctCfg.field).
+				Query("'" + strings.Join(tagVals, " OR ") + "'").BuildParser()
+			skuFilters = append(skuFilters, filterQuery)
 		} else {
-			skuFilters = append(skuFilters, fmt.Sprintf("{!tag=%s}%s:*", fctCfg.field, fctCfg.field))
+			filterQuery := solr.NewStandardQueryParser().Tag(fctCfg.field).
+				Query(fctCfg.field + ":*").BuildParser()
+			skuFilters = append(skuFilters, filterQuery)
 		}
 
-		facetsMap[fctCfg.facet] = Map{
-			"domain": Map{
-				"excludeTags": "top",
-				"filter": []string{
-					fmt.Sprintf("{!filters param=$skuFilters excludeTags=%s v=$sku}", fctCfg.field),
-					"{!child of=$product filters=$filter v=$product}",
-				},
-			},
-			"type":  "terms",
-			"field": fctCfg.field,
-			"limit": -1,
-			"facet": Map{
-				"productCount": "uniqueBlock(_root_)",
-			},
-		}
+		facet := solr.NewTermsFacet(fctCfg.facet).
+			Field(fctCfg.field).Limit(-1).
+			AddToDomain("excludeTags", "top").
+			AddToDomain("filter", []string{
+				solr.NewFiltersQueryParser().
+					Param("$skuFilters").
+					ExcludeTags(fctCfg.field).
+					Query("$sku").BuildParser(),
+				solr.NewChildrenQueryParser().
+					Of("$product").
+					Filters("$filter").
+					Query("$product").
+					BuildParser(),
+			}).
+			AddToFacet("productCount", "uniqueBlock(_root_)")
+
+		facets = append(facets, facet)
 	}
 
 	q := r.URL.Query().Get("q")
@@ -135,20 +141,27 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		q = fmt.Sprintf("%q", q)
 	}
 
-	productFilters = append(productFilters, fmt.Sprintf("{!tag=top}_text_:%s", q))
+	productFilters = append(productFilters, solr.NewStandardQueryParser().
+		Tag("top").Query("_text_:"+q).BuildParser())
 
-	query := Map{
-		"query": "{!parent tag=top filters=$skuFilters which=$product score=total v=$sku}",
-		"queries": Map{
+	query := solr.NewQuery().
+		QueryParser(
+			solr.NewParentQueryParser().
+				Tag("top").
+				Filters("$skuFilters").
+				Which("$product").
+				Score("total").
+				Query("$sku"),
+		).
+		Queries(solr.M{
 			"product":    "docType:product",
 			"sku":        "docType:sku",
 			"skuFilters": skuFilters,
-		},
-		"filter": productFilters,
-		"facet":  facetsMap,
-	}
+		}).
+		Filters(productFilters...).
+		Facets(facets...)
 
-	queryResp, err := h.solrClient.Query().Query(r.Context(), h.collection, query)
+	queryResp, err := h.solrClient.Query(r.Context(), h.collection, query)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -166,33 +179,32 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		resp["query"] = query
 	}
 
-	w.Header().Add("content-type", "application/json")
 	err = json.NewEncoder(w).Encode(resp)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
 }
 
-func buildResp(queryResp *query.Response) (Map, error) {
-	var facets = []Map{}
+func buildResp(queryResp *solr.QueryResponse) (solr.M, error) {
+	var facets = []solr.M{}
 	for name, v := range queryResp.Facets {
 		if name == "count" {
 			continue
 		}
 
-		vv, ok := v.(Map)
+		vv, ok := v.(map[string]interface{})
 		if !ok {
 			return nil, errors.New("v is not M")
 		}
 
-		bucks, ok := vv["buckets"].([]Any)
+		bucks, ok := vv["buckets"].([]interface{})
 		if !ok {
 			return nil, errors.New("vv is not []Any")
 		}
 
-		buckets := []Map{}
+		buckets := []solr.M{}
 		for _, bk := range bucks {
-			buck, ok := bk.(Map)
+			buck, ok := bk.(map[string]interface{})
 			if !ok {
 				return nil, errors.New("bucket is not M")
 			}
@@ -212,7 +224,7 @@ func buildResp(queryResp *query.Response) (Map, error) {
 				return nil, errors.New("val is not string")
 			}
 
-			buckets = append(buckets, Map{
+			buckets = append(buckets, solr.M{
 				"val":          val,
 				"skuCount":     int(skuCount),
 				"productCount": int(productCount),
@@ -227,31 +239,31 @@ func buildResp(queryResp *query.Response) (Map, error) {
 			}
 		}
 
-		facets = append(facets, Map{
+		facets = append(facets, solr.M{
 			"name":    name,
 			"param":   param,
 			"buckets": buckets,
 		})
 	}
 
-	var products = []Map{}
-	for _, doc := range queryResp.Response.Docs {
+	var products = []solr.M{}
+	for _, doc := range queryResp.Response.Documents {
 		id, ok := doc["id"].(string)
 		if !ok {
 			return nil, errors.New("id not found or is not string")
 		}
 
-		name, ok := doc["name"].([]Any)
+		name, ok := doc["name"].([]interface{})
 		if !ok {
 			return nil, errors.New("name not found or is not []Any")
 		}
 
-		category, ok := doc["category"].([]Any)
+		category, ok := doc["category"].([]interface{})
 		if !ok {
 			return nil, errors.New("category not found or is not []Any")
 		}
 
-		brand, ok := doc["brand"].([]Any)
+		brand, ok := doc["brand"].([]interface{})
 		if !ok {
 			return nil, errors.New("brand not found or is not []Any")
 		}
@@ -261,7 +273,7 @@ func buildResp(queryResp *query.Response) (Map, error) {
 			return nil, errors.New("productType not found or is not string")
 		}
 
-		products = append(products, Map{
+		products = append(products, solr.M{
 			"id":          id,
 			"name":        name[0].(string),
 			"category":    category[0].(string),
@@ -270,7 +282,7 @@ func buildResp(queryResp *query.Response) (Map, error) {
 		})
 	}
 
-	return Map{
+	return solr.M{
 		"products": products,
 		"facets":   facets,
 	}, nil
