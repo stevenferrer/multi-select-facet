@@ -135,7 +135,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	queryParser := solr.NewParentQueryParser().Tag("top").Filters("$skuFilters").
 		Which("$product").Score("total").Query("$sku")
-	query := solr.NewQuery().QueryParser(queryParser).
+	query := solr.NewQuery(queryParser.BuildParser()).
 		Filters(productFilters...).
 		Facets(facets...).
 		Queries(solr.M{
