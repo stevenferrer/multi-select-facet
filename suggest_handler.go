@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/sf9v/solr-go"
+	"github.com/stevenferrer/solr-go"
 )
 
 type suggestHandler struct {

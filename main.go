@@ -14,7 +14,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/pkg/errors"
 
-	solr "github.com/sf9v/solr-go"
+	solr "github.com/stevenferrer/solr-go"
 )
 
 const (
