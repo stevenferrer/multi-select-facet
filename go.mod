@@ -1,4 +1,4 @@
-module github.com/sf9v/multi-select-facet
+module github.com/stevenferrer/multi-select-facet
 
 go 1.15
 

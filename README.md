@@ -1,7 +1,7 @@
 # Multi-Select Facet Example
-An example of multi-select facet using [Solr](https://lucene.apache.org/solr), [Vue](https://vuejs.org) and [Go](http://go.dev/). 
+An example of multi-select facet using [Solr](https://solr.apache.org), [Vue](https://vuejs.org) and [Go](http://go.dev/). 
 
-Blog post: [Multi-Select Facet with Solr, Vue and Go](https://sf9v.github.io/posts/multi-select-facet-solr-vue-go/)
+Blog post: [Multi-Select Facet with Solr, Vue and Go](https://stevenferrer.github.io/posts/multi-select-facet-solr-vue-go/)
 
 ![screenshot](./screenshot.png)
 
@@ -44,7 +44,7 @@ $ yarn serve // or npm run serve
 
 
 ## Contributing
-Feel free to improve this project by [make a pull-request](https://github.com/sf9v/multi-select-facet/pulls) or [opening an issue](https://github.com/sf9v/multi-select-facet/issues).
+Feel free to improve this project by [make a pull-request](https://github.com/stevenferrer/multi-select-facet/pulls) or [opening an issue](https://github.com/stevenferrer/multi-select-facet/issues).
 
 ## License
 
